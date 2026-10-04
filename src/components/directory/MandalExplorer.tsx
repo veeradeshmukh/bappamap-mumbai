@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import MapContainer from "@/components/map/MapContainer";
 import FilterBar from "@/components/filters/FilterBar";
 import MandalCardList from "@/components/directory/MandalCardList";
+import ContributionModal from "@/components/modals/ContributionModal";
 import { useMandalFilters } from "@/hooks/useMandalFilters";
 import { filterMandals } from "@/lib/filters/engine";
 import { MandalItem } from "@/types/mandal";
@@ -28,6 +29,8 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
         setSelectedMandalSlug,
         hasActiveFilters
     } = useMandalFilters();
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     // 1. Filter mandals based on active filters and search query
     const filteredMandals = useMemo(() => {
@@ -134,10 +137,11 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                             </span>
                         </div>
 
-                        {/* UGC Contribution Modal Trigger (Placeholder for Sprint 3) */}
+                        {/* UGC Contribution Modal Trigger */}
                         <button
                             type="button"
                             data-testid="add-review-modal-btn"
+                            onClick={() => setIsModalOpen(true)}
                             className="inline-flex items-center gap-1.5 rounded-lg bg-brand-vermillion px-3 py-1.5 text-xs font-semibold text-white shadow-md shadow-red-950/50 hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-marigold"
                         >
                             {t("nav.addReview", language)}
@@ -212,6 +216,14 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                     </div>
                 </div>
             </footer>
+
+            {/* Contribution Modal (Suggest, Review, Photo) */}
+            <ContributionModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                mandals={initialMandals}
+                language={language}
+            />
         </div>
     );
 }

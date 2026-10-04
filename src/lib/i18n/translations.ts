@@ -142,6 +142,36 @@ export const TRANSLATIONS: TranslationDictionary = {
     "map.viewportNotice": {
         en: "South Mumbai Restricted Viewport • Colaba to Lalbaug",
         mr: "दक्षिण मुंबई मर्यादित नकाशा • कुलाबा ते लालबाग"
+    },
+
+    // Contribution Modal
+    "modal.title": {
+        en: "Contribute to BappaMap",
+        mr: "बाप्पा मॅपमध्ये योगदान द्या"
+    },
+    "modal.tabSuggest": {
+        en: "Suggest Mandal",
+        mr: "नवीन मंडळ"
+    },
+    "modal.tabReview": {
+        en: "Review & Crowd",
+        mr: "पुनरावलोकन व गर्दी"
+    },
+    "modal.tabPhoto": {
+        en: "Upload Photo",
+        mr: "छायाचित्र जोडा"
+    },
+    "modal.successTitle": {
+        en: "Contribution Received!",
+        mr: "योगदान यशस्वीरित्या प्राप्त!"
+    },
+    "modal.successDetail": {
+        en: "Thank you for contributing to BappaMap Mumbai! Your submission has been safely queued for volunteer review and will appear once verified.",
+        mr: "बाप्पा मॅप मुंबईमध्ये योगदान दिल्याबद्दल धन्यवाद! आपले योगदान स्वयंसेवक पडताळणीसाठी सुरक्षितपणे नोंदवले आहे आणि मंजुरीनंतर दिसेल."
+    },
+    "modal.backToMap": {
+        en: "Back to Map",
+        mr: "नकाशाकडे परत जा"
     }
 };
 
