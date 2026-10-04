@@ -5,6 +5,7 @@
 ---
 
 ## 1. Project Overview
+
 **BappaMap Mumbai** is a high-performance, mobile-first, privacy-respecting interactive map and community directory for the iconic Ganpati mandals of South Mumbai (Colaba to Lalbaug/Parel). Built for extreme resilience under congested cellular festival traffic.
 
 - **Stack:** Next.js (App Router, Static First), TypeScript, Tailwind CSS, MapLibre GL JS.

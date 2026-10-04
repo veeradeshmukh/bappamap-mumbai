@@ -1,0 +1,62 @@
+@import "maplibre-gl/dist/maplibre-gl.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    --font-marathi: "Tiro Devanagari Marathi", "Mukta", serif;
+}
+
+body {
+    background-color: #0b0f17;
+    color: #f8fafc;
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Custom MapLibre Popup Basalt Overrides */
+.maplibregl-popup {
+    max-width: 320px !important;
+    z-index: 50;
+}
+
+.maplibregl-popup-content {
+    background-color: #141a24 !important;
+    color: #f8fafc !important;
+    border: 1px solid #2a364b !important;
+    border-radius: 12px !important;
+    padding: 16px !important;
+    box-shadow:
+        0 10px 25px -5px rgba(0, 0, 0, 0.7),
+        0 8px 10px -6px rgba(0, 0, 0, 0.7) !important;
+}
+
+.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+    border-bottom-color: #141a24 !important;
+}
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+    border-top-color: #141a24 !important;
+}
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+    border-right-color: #141a24 !important;
+}
+.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+    border-left-color: #141a24 !important;
+}
+
+.maplibregl-popup-close-button {
+    color: #94a3b8 !important;
+    font-size: 18px !important;
+    padding: 4px 8px !important;
+    right: 4px !important;
+    top: 4px !important;
+}
+
+.maplibregl-popup-close-button:hover {
+    color: #f8fafc !important;
+    background: transparent !important;
+}

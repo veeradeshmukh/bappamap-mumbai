@@ -1,230 +1,230 @@
 [
-  {
-    "slug": "keshavji-naik-chawl",
-    "nameEn": "Keshavji Naik Chawl Sarvajanik Ganeshotsav",
-    "nameMr": "केशवजी नाईक चाळ सार्वजनिक गणेशोत्सव",
-    "localityEn": "Girgaon",
-    "localityMr": "गिरगाव",
-    "bmcWard": "D",
-    "foundedYear": 1893,
-    "latitude": 18.956710,
-    "longitude": 72.821420,
-    "descriptionEn": "Established in 1893, this is Mumbai's first Sarvajanik (public) Ganeshotsav mandal, inspired by Lokmanya Bal Gangadhar Tilak. It continues the historic tradition of a serene 2-foot eco-friendly Shadu clay idol.",
-    "descriptionMr": "१८९३ मध्ये लोकमान्य बाळ गंगाधर टिळक यांच्या प्रेरणेने सुरू झालेला हा मुंबईतील पहिला सार्वजनिक गणेशोत्सव आहे. येथे आजही पारंपारिक २ फुटांची शाडूच्या मातीची मूर्ती पूजली जाते.",
-    "attributes": {
-      "parkingNearby": false,
-      "wheelchairAccessible": false,
-      "darshanTypes": ["traditional_darshan"],
-      "nearestStation": "Charni Road (Western Line)"
+    {
+        "slug": "keshavji-naik-chawl",
+        "nameEn": "Keshavji Naik Chawl Sarvajanik Ganeshotsav",
+        "nameMr": "केशवजी नाईक चाळ सार्वजनिक गणेशोत्सव",
+        "localityEn": "Girgaon",
+        "localityMr": "गिरगाव",
+        "bmcWard": "D",
+        "foundedYear": 1893,
+        "latitude": 18.95671,
+        "longitude": 72.82142,
+        "descriptionEn": "Established in 1893, this is Mumbai's first Sarvajanik (public) Ganeshotsav mandal, inspired by Lokmanya Bal Gangadhar Tilak. It continues the historic tradition of a serene 2-foot eco-friendly Shadu clay idol.",
+        "descriptionMr": "१८९३ मध्ये लोकमान्य बाळ गंगाधर टिळक यांच्या प्रेरणेने सुरू झालेला हा मुंबईतील पहिला सार्वजनिक गणेशोत्सव आहे. येथे आजही पारंपारिक २ फुटांची शाडूच्या मातीची मूर्ती पूजली जाते.",
+        "attributes": {
+            "parkingNearby": false,
+            "wheelchairAccessible": false,
+            "darshanTypes": ["traditional_darshan"],
+            "nearestStation": "Charni Road (Western Line)"
+        }
+    },
+    {
+        "slug": "girgaoncha-raja",
+        "nameEn": "Girgaoncha Raja (Nikadwari Lane)",
+        "nameMr": "गिरगावचा राजा (निकदवारी लेन)",
+        "localityEn": "Girgaon",
+        "localityMr": "गिरगाव",
+        "bmcWard": "D",
+        "foundedYear": 1928,
+        "latitude": 18.95512,
+        "longitude": 72.81971,
+        "descriptionEn": "Founded in 1928, Girgaoncha Raja is celebrated across Maharashtra for installing a towering 22-25 foot eco-friendly Shadu clay idol that is immersed traditionally at Girgaon Chowpatty.",
+        "descriptionMr": "१९२८ मध्ये स्थापन झालेला गिरगावचा राजा हा भव्य २२-२५ फुटांच्या पर्यावरणपूरक शाडूच्या मातीच्या मूर्तीसाठी जगभर प्रसिद्ध आहे.",
+        "attributes": {
+            "parkingNearby": false,
+            "wheelchairAccessible": true,
+            "darshanTypes": ["mukh_darshan"],
+            "nearestStation": "Charni Road (Western Line)"
+        }
+    },
+    {
+        "slug": "khetwadi-ganraj-12th-lane",
+        "nameEn": "Khetwadi Ganraj (12th Lane)",
+        "nameMr": "खेतवाडी गणराज (१२वी गल्ली)",
+        "localityEn": "Khetwadi, Grant Road",
+        "localityMr": "खेतवाडी, ग्रँट रोड",
+        "bmcWard": "D",
+        "foundedYear": 1959,
+        "latitude": 18.96023,
+        "longitude": 72.82394,
+        "descriptionEn": "Established in 1959, Khetwadi 12th Lane is legendary for crafting some of the tallest and most magnificent artistic idols in Indian festival history, set inside palace-themed pandals.",
+        "descriptionMr": "१९५९ मध्ये सुरू झालेले १२व्या खेतवाडी गल्लीचे हे मंडळ भारतातील सर्वात भव्य व कलात्मक गणेश मूर्ती आणि महालासारख्या देखाव्यांसाठी ओळखले जाते.",
+        "attributes": {
+            "parkingNearby": false,
+            "wheelchairAccessible": false,
+            "darshanTypes": ["mukh_darshan", "charan_sparsh"],
+            "nearestStation": "Grant Road (Western Line)"
+        }
+    },
+    {
+        "slug": "khetwadicha-raja-4th-lane",
+        "nameEn": "Khetwadicha Raja (4th Lane)",
+        "nameMr": "खेतवाडीचा राजा (४थी गल्ली)",
+        "localityEn": "Khetwadi",
+        "localityMr": "खेतवाडी",
+        "bmcWard": "D",
+        "foundedYear": 1968,
+        "latitude": 18.95851,
+        "longitude": 72.82203,
+        "descriptionEn": "A core pillar of Khetwadi's famous 14-lane Ganeshotsav corridor, renowned for thematic lighting and majestic pandal entrances.",
+        "descriptionMr": "खेतवाडीच्या १४ गल्ल्यांमधील एक प्रमुख आणि मानाचे मंडळ, जे विहंगम विद्युत रोषणाईसाठी ओळखले जाते.",
+        "attributes": {
+            "parkingNearby": false,
+            "wheelchairAccessible": true,
+            "darshanTypes": ["mukh_darshan"],
+            "nearestStation": "Grant Road (Western Line)"
+        }
+    },
+    {
+        "slug": "fort-vibhag-sarvajanik-ganeshotsav",
+        "nameEn": "Fort Vibhag Sarvajanik Ganeshotsav (Fortcha Icchapurti)",
+        "nameMr": "फोर्ट विभाग सार्वजनिक गणेशोत्सव (फोर्टचा इच्छापूर्ती)",
+        "localityEn": "Fort / CSMT",
+        "localityMr": "फोर्ट / सीएसएमटी",
+        "bmcWard": "A",
+        "foundedYear": 1962,
+        "latitude": 18.93982,
+        "longitude": 72.83541,
+        "descriptionEn": "Located near the General Post Office and CSMT, this historic South Mumbai pandal recreates monumental Indian heritage palaces and temples with intricate sustainable craft.",
+        "descriptionMr": "मुंबई जीपीओ आणि सीएसएमटी परिसरातील हे मानाचे मंडळ दरवर्षी भारतातील प्रसिद्ध ऐतिहासिक महालांचे मनमोहक देखावे साकारते.",
+        "attributes": {
+            "parkingNearby": true,
+            "wheelchairAccessible": true,
+            "darshanTypes": ["mukh_darshan"],
+            "nearestStation": "CSMT (Central / Harbour Line)"
+        }
+    },
+    {
+        "slug": "akhil-chandanwadi-ganpati",
+        "nameEn": "Akhil Chandanwadi Ganpati",
+        "nameMr": "अखिल चंदनवाडी गणपती",
+        "localityEn": "Chira Bazar, Marine Lines",
+        "localityMr": "चिरा बाजार, मरीन लाईन्स",
+        "bmcWard": "C",
+        "foundedYear": 1977,
+        "latitude": 18.94824,
+        "longitude": 72.82581,
+        "descriptionEn": "A prominent neighborhood mandal in South Mumbai's jewelry and textile trade hub between Chira Bazar and Marine Lines.",
+        "descriptionMr": "दक्षिण मुंबईतील चिरा बाजार आणि मरीन लाईन्स परिसरातील प्रसिद्ध व मानाचे गणेशोत्सव मंडळ.",
+        "attributes": {
+            "parkingNearby": false,
+            "wheelchairAccessible": false,
+            "darshanTypes": ["mukh_darshan"],
+            "nearestStation": "Marine Lines (Western Line)"
+        }
+    },
+    {
+        "slug": "akhil-anjirwadi-mazgaon",
+        "nameEn": "Akhil Anjirwadi Sarvajanik Utsav Mandal",
+        "nameMr": "अखिल अंजीरवाडी सार्वजनिक उत्सव मंडळ",
+        "localityEn": "Mustafa Bazar, Mazgaon",
+        "localityMr": "मुस्तफा बाजार, माझगाव",
+        "bmcWard": "E",
+        "foundedYear": 1953,
+        "latitude": 18.97121,
+        "longitude": 72.84212,
+        "descriptionEn": "Established in 1953 in Mazgaon's historic commercial trading precinct, celebrated for cultural stage dramas and community charity.",
+        "descriptionMr": "१९५३ मध्ये माझगाव परिसरात स्थापन झालेले मंडळ, सामाजिक उपक्रम आणि सांस्कृतिक नाटकांच्या सादरीकरणासाठी प्रसिद्ध आहे.",
+        "attributes": {
+            "parkingNearby": true,
+            "wheelchairAccessible": true,
+            "darshanTypes": ["mukh_darshan"],
+            "nearestStation": "Sandhurst Road (Central / Harbour Line)"
+        }
+    },
+    {
+        "slug": "chinchpoklicha-chintamani",
+        "nameEn": "Chinchpoklicha Chintamani",
+        "nameMr": "चिंचपोकळीचा चिंतामणी",
+        "localityEn": "Chinchpokli",
+        "localityMr": "चिंचपोकळी",
+        "bmcWard": "E",
+        "foundedYear": 1920,
+        "latitude": 18.98822,
+        "longitude": 72.83354,
+        "descriptionEn": "Celebrating over 100 years of heritage, Chinchpoklicha Chintamani is world-famous for its majestic seated idol posture and the emotional Aagman Sohala procession.",
+        "descriptionMr": "शतकोत्तर परंपरा असलेला चिंचपोकळीचा चिंतामणी हा आपल्या मनमोहक मूर्ती आणि विलोभनीय आगमन सोहळ्यासाठी प्रसिद्ध आहे.",
+        "attributes": {
+            "parkingNearby": false,
+            "wheelchairAccessible": false,
+            "darshanTypes": ["mukh_darshan", "charan_sparsh"],
+            "nearestStation": "Chinchpokli (Central Line)"
+        }
+    },
+    {
+        "slug": "lalbaugcha-raja",
+        "nameEn": "Lalbaugcha Raja",
+        "nameMr": "लालबागचा राजा",
+        "localityEn": "Lalbaug Market",
+        "localityMr": "लालबाग मार्केट",
+        "bmcWard": "F/South",
+        "foundedYear": 1934,
+        "latitude": 18.99052,
+        "longitude": 72.83641,
+        "descriptionEn": "Founded in 1934 by local fishermen and mill workers in Lalbaug market. Known as 'Navasacha Ganpati' (fulfiller of vows), it attracts millions of devotees each year.",
+        "descriptionMr": "१९३४ मध्ये कोळी बांधव व गिरणी कामगारांनी स्थापन केलेला नवसाचा गणपती. दरवर्षी देशभरातून कोट्यवधी भाविक दर्शनासाठी येथे येतात.",
+        "attributes": {
+            "parkingNearby": false,
+            "wheelchairAccessible": true,
+            "darshanTypes": ["mukh_darshan", "navas_charan_sparsh"],
+            "nearestStation": "Currey Road (Central Line) / Lower Parel (Western Line)"
+        }
+    },
+    {
+        "slug": "mumbaicha-raja-ganesh-galli",
+        "nameEn": "Mumbaicha Raja (Ganesh Galli)",
+        "nameMr": "मुंबईचा राजा (गणेश गल्ली)",
+        "localityEn": "Ganesh Galli, Lalbaug",
+        "localityMr": "गणेश गल्ली, लालबाग",
+        "bmcWard": "F/South",
+        "foundedYear": 1928,
+        "latitude": 18.99201,
+        "longitude": 72.83802,
+        "descriptionEn": "The oldest mandal in Lalbaug, founded in 1928. Renowned for introducing grand thematic temple replicas (e.g. Kedarnath, Hampi) to public Ganeshotsav.",
+        "descriptionMr": "लालबागमधील सर्वात जुने मंडळ (स्थापना १९२८). भारतातील प्रसिद्ध मंदिरांचे हुबेहूब देखावे साकारण्यात हे मंडळ अग्रगण्य आहे.",
+        "attributes": {
+            "parkingNearby": false,
+            "wheelchairAccessible": true,
+            "darshanTypes": ["mukh_darshan"],
+            "nearestStation": "Currey Road (Central Line)"
+        }
+    },
+    {
+        "slug": "tejukaya-mandap",
+        "nameEn": "Tejukaya Sarvajanik Ganeshotsav Trust",
+        "nameMr": "तेजुकूया सार्वजनिक गणेशोत्सव ट्रस्ट",
+        "localityEn": "Tejukaya Compound, Lalbaug",
+        "localityMr": "तेजुकूया कंपाऊंड, लालबाग",
+        "bmcWard": "F/South",
+        "foundedYear": 1967,
+        "latitude": 18.99124,
+        "longitude": 72.83582,
+        "descriptionEn": "A celebrated community trust in Lalbaug, acclaimed for lifelike dynamic clay sculptures and socially relevant tableau themes.",
+        "descriptionMr": "लालबागमधील लोकप्रिय मंडळ, जे चैतन्यमय मूर्तीकाम आणि सामाजिक प्रबोधनपर देखाव्यांसाठी प्रसिद्ध आहे.",
+        "attributes": {
+            "parkingNearby": false,
+            "wheelchairAccessible": false,
+            "darshanTypes": ["mukh_darshan"],
+            "nearestStation": "Currey Road (Central Line)"
+        }
+    },
+    {
+        "slug": "bal-gopal-mitra-mandal-girgaon",
+        "nameEn": "Bal Gopal Mitra Mandal",
+        "nameMr": "बाल गोपाळ मित्र मंडळ",
+        "localityEn": "Opera House / Girgaon",
+        "localityMr": "ऑपेरा हाऊस / गिरगाव",
+        "bmcWard": "D",
+        "foundedYear": 1960,
+        "latitude": 18.95604,
+        "longitude": 72.81893,
+        "descriptionEn": "A vibrant neighborhood mandal in South Mumbai near Prarthana Samaj, preserving age-old community bhajan and aarti traditions.",
+        "descriptionMr": "प्रार्थना समाज व ऑपेरा हाऊस परिसरातील पारंपरिक मंडळ, जे भजन व सांस्कृतिक परंपरा जपत आहे.",
+        "attributes": {
+            "parkingNearby": false,
+            "wheelchairAccessible": true,
+            "darshanTypes": ["traditional_darshan"],
+            "nearestStation": "Charni Road (Western Line)"
+        }
     }
-  },
-  {
-    "slug": "girgaoncha-raja",
-    "nameEn": "Girgaoncha Raja (Nikadwari Lane)",
-    "nameMr": "गिरगावचा राजा (निकदवारी लेन)",
-    "localityEn": "Girgaon",
-    "localityMr": "गिरगाव",
-    "bmcWard": "D",
-    "foundedYear": 1928,
-    "latitude": 18.955120,
-    "longitude": 72.819710,
-    "descriptionEn": "Founded in 1928, Girgaoncha Raja is celebrated across Maharashtra for installing a towering 22-25 foot eco-friendly Shadu clay idol that is immersed traditionally at Girgaon Chowpatty.",
-    "descriptionMr": "१९२८ मध्ये स्थापन झालेला गिरगावचा राजा हा भव्य २२-२५ फुटांच्या पर्यावरणपूरक शाडूच्या मातीच्या मूर्तीसाठी जगभर प्रसिद्ध आहे.",
-    "attributes": {
-      "parkingNearby": false,
-      "wheelchairAccessible": true,
-      "darshanTypes": ["mukh_darshan"],
-      "nearestStation": "Charni Road (Western Line)"
-    }
-  },
-  {
-    "slug": "khetwadi-ganraj-12th-lane",
-    "nameEn": "Khetwadi Ganraj (12th Lane)",
-    "nameMr": "खेतवाडी गणराज (१२वी गल्ली)",
-    "localityEn": "Khetwadi, Grant Road",
-    "localityMr": "खेतवाडी, ग्रँट रोड",
-    "bmcWard": "D",
-    "foundedYear": 1959,
-    "latitude": 18.960230,
-    "longitude": 72.823940,
-    "descriptionEn": "Established in 1959, Khetwadi 12th Lane is legendary for crafting some of the tallest and most magnificent artistic idols in Indian festival history, set inside palace-themed pandals.",
-    "descriptionMr": "१९५९ मध्ये सुरू झालेले १२व्या खेतवाडी गल्लीचे हे मंडळ भारतातील सर्वात भव्य व कलात्मक गणेश मूर्ती आणि महालासारख्या देखाव्यांसाठी ओळखले जाते.",
-    "attributes": {
-      "parkingNearby": false,
-      "wheelchairAccessible": false,
-      "darshanTypes": ["mukh_darshan", "charan_sparsh"],
-      "nearestStation": "Grant Road (Western Line)"
-    }
-  },
-  {
-    "slug": "khetwadicha-raja-4th-lane",
-    "nameEn": "Khetwadicha Raja (4th Lane)",
-    "nameMr": "खेतवाडीचा राजा (४थी गल्ली)",
-    "localityEn": "Khetwadi",
-    "localityMr": "खेतवाडी",
-    "bmcWard": "D",
-    "foundedYear": 1968,
-    "latitude": 18.958510,
-    "longitude": 72.822030,
-    "descriptionEn": "A core pillar of Khetwadi's famous 14-lane Ganeshotsav corridor, renowned for thematic lighting and majestic pandal entrances.",
-    "descriptionMr": "खेतवाडीच्या १४ गल्ल्यांमधील एक प्रमुख आणि मानाचे मंडळ, जे विहंगम विद्युत रोषणाईसाठी ओळखले जाते.",
-    "attributes": {
-      "parkingNearby": false,
-      "wheelchairAccessible": true,
-      "darshanTypes": ["mukh_darshan"],
-      "nearestStation": "Grant Road (Western Line)"
-    }
-  },
-  {
-    "slug": "fort-vibhag-sarvajanik-ganeshotsav",
-    "nameEn": "Fort Vibhag Sarvajanik Ganeshotsav (Fortcha Icchapurti)",
-    "nameMr": "फोर्ट विभाग सार्वजनिक गणेशोत्सव (फोर्टचा इच्छापूर्ती)",
-    "localityEn": "Fort / CSMT",
-    "localityMr": "फोर्ट / सीएसएमटी",
-    "bmcWard": "A",
-    "foundedYear": 1962,
-    "latitude": 18.939820,
-    "longitude": 72.835410,
-    "descriptionEn": "Located near the General Post Office and CSMT, this historic South Mumbai pandal recreates monumental Indian heritage palaces and temples with intricate sustainable craft.",
-    "descriptionMr": "मुंबई जीपीओ आणि सीएसएमटी परिसरातील हे मानाचे मंडळ दरवर्षी भारतातील प्रसिद्ध ऐतिहासिक महालांचे मनमोहक देखावे साकारते.",
-    "attributes": {
-      "parkingNearby": true,
-      "wheelchairAccessible": true,
-      "darshanTypes": ["mukh_darshan"],
-      "nearestStation": "CSMT (Central / Harbour Line)"
-    }
-  },
-  {
-    "slug": "akhil-chandanwadi-ganpati",
-    "nameEn": "Akhil Chandanwadi Ganpati",
-    "nameMr": "अखिल चंदनवाडी गणपती",
-    "localityEn": "Chira Bazar, Marine Lines",
-    "localityMr": "चिरा बाजार, मरीन लाईन्स",
-    "bmcWard": "C",
-    "foundedYear": 1977,
-    "latitude": 18.948240,
-    "longitude": 72.825810,
-    "descriptionEn": "A prominent neighborhood mandal in South Mumbai's jewelry and textile trade hub between Chira Bazar and Marine Lines.",
-    "descriptionMr": "दक्षिण मुंबईतील चिरा बाजार आणि मरीन लाईन्स परिसरातील प्रसिद्ध व मानाचे गणेशोत्सव मंडळ.",
-    "attributes": {
-      "parkingNearby": false,
-      "wheelchairAccessible": false,
-      "darshanTypes": ["mukh_darshan"],
-      "nearestStation": "Marine Lines (Western Line)"
-    }
-  },
-  {
-    "slug": "akhil-anjirwadi-mazgaon",
-    "nameEn": "Akhil Anjirwadi Sarvajanik Utsav Mandal",
-    "nameMr": "अखिल अंजीरवाडी सार्वजनिक उत्सव मंडळ",
-    "localityEn": "Mustafa Bazar, Mazgaon",
-    "localityMr": "मुस्तफा बाजार, माझगाव",
-    "bmcWard": "E",
-    "foundedYear": 1953,
-    "latitude": 18.971210,
-    "longitude": 72.842120,
-    "descriptionEn": "Established in 1953 in Mazgaon's historic commercial trading precinct, celebrated for cultural stage dramas and community charity.",
-    "descriptionMr": "१९५३ मध्ये माझगाव परिसरात स्थापन झालेले मंडळ, सामाजिक उपक्रम आणि सांस्कृतिक नाटकांच्या सादरीकरणासाठी प्रसिद्ध आहे.",
-    "attributes": {
-      "parkingNearby": true,
-      "wheelchairAccessible": true,
-      "darshanTypes": ["mukh_darshan"],
-      "nearestStation": "Sandhurst Road (Central / Harbour Line)"
-    }
-  },
-  {
-    "slug": "chinchpoklicha-chintamani",
-    "nameEn": "Chinchpoklicha Chintamani",
-    "nameMr": "चिंचपोकळीचा चिंतामणी",
-    "localityEn": "Chinchpokli",
-    "localityMr": "चिंचपोकळी",
-    "bmcWard": "E",
-    "foundedYear": 1920,
-    "latitude": 18.988220,
-    "longitude": 72.833540,
-    "descriptionEn": "Celebrating over 100 years of heritage, Chinchpoklicha Chintamani is world-famous for its majestic seated idol posture and the emotional Aagman Sohala procession.",
-    "descriptionMr": "शतकोत्तर परंपरा असलेला चिंचपोकळीचा चिंतामणी हा आपल्या मनमोहक मूर्ती आणि विलोभनीय आगमन सोहळ्यासाठी प्रसिद्ध आहे.",
-    "attributes": {
-      "parkingNearby": false,
-      "wheelchairAccessible": false,
-      "darshanTypes": ["mukh_darshan", "charan_sparsh"],
-      "nearestStation": "Chinchpokli (Central Line)"
-    }
-  },
-  {
-    "slug": "lalbaugcha-raja",
-    "nameEn": "Lalbaugcha Raja",
-    "nameMr": "लालबागचा राजा",
-    "localityEn": "Lalbaug Market",
-    "localityMr": "लालबाग मार्केट",
-    "bmcWard": "F/South",
-    "foundedYear": 1934,
-    "latitude": 18.990520,
-    "longitude": 72.836410,
-    "descriptionEn": "Founded in 1934 by local fishermen and mill workers in Lalbaug market. Known as 'Navasacha Ganpati' (fulfiller of vows), it attracts millions of devotees each year.",
-    "descriptionMr": "१९३४ मध्ये कोळी बांधव व गिरणी कामगारांनी स्थापन केलेला नवसाचा गणपती. दरवर्षी देशभरातून कोट्यवधी भाविक दर्शनासाठी येथे येतात.",
-    "attributes": {
-      "parkingNearby": false,
-      "wheelchairAccessible": true,
-      "darshanTypes": ["mukh_darshan", "navas_charan_sparsh"],
-      "nearestStation": "Currey Road (Central Line) / Lower Parel (Western Line)"
-    }
-  },
-  {
-    "slug": "mumbaicha-raja-ganesh-galli",
-    "nameEn": "Mumbaicha Raja (Ganesh Galli)",
-    "nameMr": "मुंबईचा राजा (गणेश गल्ली)",
-    "localityEn": "Ganesh Galli, Lalbaug",
-    "localityMr": "गणेश गल्ली, लालबाग",
-    "bmcWard": "F/South",
-    "foundedYear": 1928,
-    "latitude": 18.992010,
-    "longitude": 72.838020,
-    "descriptionEn": "The oldest mandal in Lalbaug, founded in 1928. Renowned for introducing grand thematic temple replicas (e.g. Kedarnath, Hampi) to public Ganeshotsav.",
-    "descriptionMr": "लालबागमधील सर्वात जुने मंडळ (स्थापना १९२८). भारतातील प्रसिद्ध मंदिरांचे हुबेहूब देखावे साकारण्यात हे मंडळ अग्रगण्य आहे.",
-    "attributes": {
-      "parkingNearby": false,
-      "wheelchairAccessible": true,
-      "darshanTypes": ["mukh_darshan"],
-      "nearestStation": "Currey Road (Central Line)"
-    }
-  },
-  {
-    "slug": "tejukaya-mandap",
-    "nameEn": "Tejukaya Sarvajanik Ganeshotsav Trust",
-    "nameMr": "तेजुकूया सार्वजनिक गणेशोत्सव ट्रस्ट",
-    "localityEn": "Tejukaya Compound, Lalbaug",
-    "localityMr": "तेजुकूया कंपाऊंड, लालबाग",
-    "bmcWard": "F/South",
-    "foundedYear": 1967,
-    "latitude": 18.991240,
-    "longitude": 72.835820,
-    "descriptionEn": "A celebrated community trust in Lalbaug, acclaimed for lifelike dynamic clay sculptures and socially relevant tableau themes.",
-    "descriptionMr": "लालबागमधील लोकप्रिय मंडळ, जे चैतन्यमय मूर्तीकाम आणि सामाजिक प्रबोधनपर देखाव्यांसाठी प्रसिद्ध आहे.",
-    "attributes": {
-      "parkingNearby": false,
-      "wheelchairAccessible": false,
-      "darshanTypes": ["mukh_darshan"],
-      "nearestStation": "Currey Road (Central Line)"
-    }
-  },
-  {
-    "slug": "bal-gopal-mitra-mandal-girgaon",
-    "nameEn": "Bal Gopal Mitra Mandal",
-    "nameMr": "बाल गोपाळ मित्र मंडळ",
-    "localityEn": "Opera House / Girgaon",
-    "localityMr": "ऑपेरा हाऊस / गिरगाव",
-    "bmcWard": "D",
-    "foundedYear": 1960,
-    "latitude": 18.956040,
-    "longitude": 72.818930,
-    "descriptionEn": "A vibrant neighborhood mandal in South Mumbai near Prarthana Samaj, preserving age-old community bhajan and aarti traditions.",
-    "descriptionMr": "प्रार्थना समाज व ऑपेरा हाऊस परिसरातील पारंपरिक मंडळ, जे भजन व सांस्कृतिक परंपरा जपत आहे.",
-    "attributes": {
-      "parkingNearby": false,
-      "wheelchairAccessible": true,
-      "darshanTypes": ["traditional_darshan"],
-      "nearestStation": "Charni Road (Western Line)"
-    }
-  }
 ]
