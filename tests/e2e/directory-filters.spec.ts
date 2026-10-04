@@ -44,6 +44,7 @@ test.describe("Sprint 2: Filterable Directory & Bidirectional Sync", () => {
         );
 
         const searchInput = page.locator('[data-testid="filter-search-input"]');
+        await searchInput.click();
         await searchInput.fill("Lalbaug");
 
         // Card count should decrease to 3 (Lalbaugcha Raja, Ganesh Galli, Tejukaya)
