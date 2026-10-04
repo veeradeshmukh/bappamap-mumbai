@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
 import { MandalItem } from "@/types/mandal";
+import { Language, t, getLocalizedField } from "@/lib/i18n/translations";
 import {
     SOUTH_MUMBAI_BOUNDS,
     MAP_CENTER,
@@ -15,14 +16,31 @@ import { BAPPAMAP_STYLE } from "@/lib/map/theme";
 
 interface MapContainerProps {
     mandals: MandalItem[];
+    filteredMandalSlugs?: string[];
+    selectedMandalSlug?: string | null;
+    language?: Language;
     onSelectMandal?: (mandal: MandalItem) => void;
 }
 
-export default function MapContainer({ mandals, onSelectMandal }: MapContainerProps) {
+interface MarkerEntry {
+    slug: string;
+    mandal: MandalItem;
+    marker: maplibregl.Marker;
+    popup: maplibregl.Popup;
+}
+
+export default function MapContainer({
+    mandals,
+    filteredMandalSlugs,
+    selectedMandalSlug,
+    language = "en",
+    onSelectMandal
+}: MapContainerProps) {
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<maplibregl.Map | null>(null);
-    const markersRef = useRef<maplibregl.Marker[]>([]);
+    const markersRef = useRef<Map<string, MarkerEntry>>(new Map());
 
+    // 1. Initialize MapLibre instance
     useEffect(() => {
         if (!mapContainerRef.current || mapInstanceRef.current) return;
 
@@ -37,7 +55,6 @@ export default function MapContainer({ mandals, onSelectMandal }: MapContainerPr
             attributionControl: { compact: true }
         });
 
-        // Add standard navigation controls (zoom in/out, bearing pitch reset)
         map.addControl(new maplibregl.NavigationControl({ showCompass: true }), "top-right");
 
         mapInstanceRef.current = map;
@@ -48,17 +65,25 @@ export default function MapContainer({ mandals, onSelectMandal }: MapContainerPr
         };
     }, []);
 
-    // Synchronize markers with mandals list
+    const onSelectMandalRef = useRef(onSelectMandal);
+    const filteredSlugsRef = useRef(filteredMandalSlugs);
+    useEffect(() => {
+        onSelectMandalRef.current = onSelectMandal;
+        filteredSlugsRef.current = filteredMandalSlugs;
+    });
+
+    // 2. Synchronize markers with mandals list and language
     useEffect(() => {
         const map = mapInstanceRef.current;
         if (!map) return;
 
         // Clear existing markers
-        markersRef.current.forEach((marker) => marker.remove());
-        markersRef.current = [];
+        markersRef.current.forEach(({ marker }) => marker.remove());
+        markersRef.current.clear();
+
+        const activeSlugs = filteredSlugsRef.current ? new Set(filteredSlugsRef.current) : null;
 
         mandals.forEach((mandal) => {
-            // Accessible custom HTML marker element
             const el = document.createElement("button");
             el.className =
                 "bappamap-marker scroll-mt-32 group relative flex items-center justify-center cursor-pointer transition-transform duration-200 hover:scale-110 focus:scale-110 focus:outline-none";
@@ -68,6 +93,11 @@ export default function MapContainer({ mandals, onSelectMandal }: MapContainerPr
                 `${mandal.nameEn} (${mandal.nameMr}), ${mandal.localityEn}, founded in ${mandal.foundedYear}`
             );
             el.setAttribute("data-testid", `mandal-pin-${mandal.slug}`);
+
+            if (activeSlugs && !activeSlugs.has(mandal.slug)) {
+                el.style.display = "none";
+                el.style.pointerEvents = "none";
+            }
 
             // Custom ceremonial vermillion pin marker SVG
             el.innerHTML = `
@@ -82,8 +112,10 @@ export default function MapContainer({ mandals, onSelectMandal }: MapContainerPr
             `;
 
             const gmapsUrl = getGoogleMapsUrl(mandal.latitude, mandal.longitude);
+            const primaryName = getLocalizedField(mandal, "name", language);
+            const secondaryName = language === "mr" ? mandal.nameEn : mandal.nameMr;
+            const locality = getLocalizedField(mandal, "locality", language);
 
-            // Accessible popup
             const popup = new maplibregl.Popup({
                 offset: 25,
                 closeButton: true,
@@ -91,12 +123,22 @@ export default function MapContainer({ mandals, onSelectMandal }: MapContainerPr
             }).setHTML(`
                 <div data-testid="mandal-popup" class="space-y-2">
                     <div class="border-b border-brand-border pb-1.5">
-                        <h3 class="font-bold text-base text-brand-vermillion font-sans">${mandal.nameEn}</h3>
-                        <p class="text-sm font-marathi text-brand-marigold font-medium">${mandal.nameMr}</p>
+                        <h3 class="font-bold text-base text-white ${
+                            language === "mr" ? "font-marathi text-lg" : "font-sans"
+                        }">${primaryName}</h3>
+                        ${
+                            secondaryName && secondaryName !== primaryName
+                                ? `<p class="text-xs ${
+                                      language === "mr"
+                                          ? "font-sans text-slate-300"
+                                          : "font-marathi text-brand-marigold font-medium"
+                                  }">${secondaryName}</p>`
+                                : ""
+                        }
                     </div>
                     <div class="text-xs text-slate-300 space-y-1">
-                        <p><span class="text-slate-400">Locality:</span> ${mandal.localityEn} (${mandal.localityMr})</p>
-                        <p><span class="text-slate-400">Founded:</span> ${mandal.foundedYear} • <span class="text-slate-400">BMC Ward:</span> ${mandal.bmcWard}</p>
+                        <p><span class="text-slate-400">${t("card.locality", language)}:</span> ${locality}</p>
+                        <p><span class="text-slate-400">${t("card.founded", language)}:</span> ${mandal.foundedYear} • <span class="text-slate-400">${t("card.ward", language)}:</span> ${mandal.bmcWard}</p>
                     </div>
                     <div class="pt-2">
                         <a 
@@ -111,14 +153,14 @@ export default function MapContainer({ mandals, onSelectMandal }: MapContainerPr
                                 <polyline points="15 3 21 3 21 9"></polyline>
                                 <line x1="10" y1="14" x2="21" y2="3"></line>
                             </svg>
-                            Open in Google Maps
+                            ${t("card.directions", language)}
                         </a>
                     </div>
                 </div>
             `);
 
             popup.on("open", () => {
-                onSelectMandal?.(mandal);
+                onSelectMandalRef.current?.(mandal);
             });
 
             const marker = new maplibregl.Marker({ element: el })
@@ -141,20 +183,64 @@ export default function MapContainer({ mandals, onSelectMandal }: MapContainerPr
                 }
             });
 
-            markersRef.current.push(marker);
+            markersRef.current.set(mandal.slug, {
+                slug: mandal.slug,
+                mandal,
+                marker,
+                popup
+            });
         });
-    }, [mandals, onSelectMandal]);
+    }, [mandals, language]);
+
+    // 3. Filter synchronization: show/hide pins matching active filters
+    useEffect(() => {
+        if (!filteredMandalSlugs) return;
+        const activeSlugs = new Set(filteredMandalSlugs);
+
+        markersRef.current.forEach(({ slug, marker, popup }) => {
+            const isVisible = activeSlugs.has(slug);
+            const el = marker.getElement();
+            if (isVisible) {
+                el.style.display = "flex";
+                el.style.pointerEvents = "auto";
+            } else {
+                el.style.display = "none";
+                el.style.pointerEvents = "none";
+                if (popup.isOpen()) {
+                    popup.remove();
+                }
+            }
+        });
+    }, [filteredMandalSlugs]);
+
+    // 4. Programmatic Camera Flight when selected from directory card
+    useEffect(() => {
+        if (!selectedMandalSlug || !mapInstanceRef.current) return;
+
+        const entry = markersRef.current.get(selectedMandalSlug);
+        if (!entry) return;
+
+        mapInstanceRef.current.flyTo({
+            center: [entry.mandal.longitude, entry.mandal.latitude],
+            zoom: 15.5,
+            essential: true
+        });
+
+        if (!entry.popup.isOpen()) {
+            entry.marker.togglePopup();
+        }
+    }, [selectedMandalSlug]);
 
     return (
-        <div className="relative w-full h-full min-h-[500px]">
+        <div className="relative w-full h-full min-h-[380px] sm:min-h-[460px]">
             <div
                 ref={mapContainerRef}
                 data-testid="maplibre-container"
-                className="w-full h-full min-h-[500px] rounded-xl overflow-hidden shadow-2xl border border-brand-border"
+                className="w-full h-full min-h-[380px] sm:min-h-[460px] rounded-xl overflow-hidden shadow-2xl border border-brand-border"
             />
             {/* Viewport Boundary Notice */}
             <div className="absolute bottom-2 left-2 z-10 rounded bg-brand-surface/90 px-2.5 py-1 text-[11px] text-slate-400 backdrop-blur-sm border border-brand-border">
-                South Mumbai Restricted Viewport • Colaba to Lalbaug
+                {t("map.viewportNotice", language)}
             </div>
         </div>
     );

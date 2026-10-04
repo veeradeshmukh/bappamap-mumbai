@@ -15,8 +15,8 @@ const config: Config = {
                     elevated: "#1D2636",
                     border: "#2A364B",
                     subtle: "#1C2433",
-                    vermillion: "#E63920",
-                    "vermillion-glow": "rgba(230, 57, 32, 0.35)",
+                    vermillion: "#D4301B",
+                    "vermillion-glow": "rgba(212, 48, 27, 0.35)",
                     marigold: "#F5A623",
                     "marigold-subtle": "rgba(245, 166, 35, 0.15)"
                 },
