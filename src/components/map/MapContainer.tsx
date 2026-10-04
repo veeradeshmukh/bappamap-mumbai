@@ -86,7 +86,9 @@ export default function MapContainer({
         mandals.forEach((mandal) => {
             const el = document.createElement("button");
             el.className =
-                "bappamap-marker scroll-mt-32 group relative flex items-center justify-center cursor-pointer transition-transform duration-200 hover:scale-110 focus:scale-110 focus:outline-none";
+                "bappamap-marker group relative block cursor-pointer focus:outline-none bg-transparent p-0 m-0 border-0";
+            el.style.width = "36px";
+            el.style.height = "36px";
             el.setAttribute("tabindex", "0");
             el.setAttribute(
                 "aria-label",
@@ -99,9 +101,9 @@ export default function MapContainer({
                 el.style.pointerEvents = "none";
             }
 
-            // Custom ceremonial vermillion pin marker SVG
+            // Custom ceremonial vermillion pin marker SVG inside inner animated container
             el.innerHTML = `
-                <div class="relative flex items-center justify-center">
+                <div class="relative flex h-9 w-9 items-center justify-center transition-transform duration-150 ease-out group-hover:scale-110 group-focus:scale-110 pointer-events-none">
                     <span class="absolute inline-flex h-8 w-8 animate-ping rounded-full bg-red-500 opacity-20"></span>
                     <div class="relative flex h-9 w-9 items-center justify-center rounded-full bg-brand-surface border-2 border-brand-vermillion shadow-lg shadow-red-950/50 group-focus:ring-2 group-focus:ring-brand-marigold">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-vermillion" viewBox="0 0 24 24" fill="currentColor">
@@ -163,7 +165,10 @@ export default function MapContainer({
                 onSelectMandalRef.current?.(mandal);
             });
 
-            const marker = new maplibregl.Marker({ element: el })
+            const marker = new maplibregl.Marker({
+                element: el,
+                anchor: "center"
+            })
                 .setLngLat([mandal.longitude, mandal.latitude])
                 .setPopup(popup)
                 .addTo(map);
@@ -201,7 +206,7 @@ export default function MapContainer({
             const isVisible = activeSlugs.has(slug);
             const el = marker.getElement();
             if (isVisible) {
-                el.style.display = "flex";
+                el.style.display = "block";
                 el.style.pointerEvents = "auto";
             } else {
                 el.style.display = "none";

@@ -60,3 +60,18 @@ body {
     color: #f8fafc !important;
     background: transparent !important;
 }
+
+/* MapLibre Pin & Marker Positioning Lock */
+.maplibregl-marker {
+    transition: none !important;
+    will-change: transform;
+}
+
+.bappamap-marker {
+    transition: none !important;
+    box-sizing: border-box;
+}
+
+.maplibregl-popup {
+    transition: none !important;
+}
