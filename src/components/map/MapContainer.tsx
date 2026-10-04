@@ -86,7 +86,7 @@ export default function MapContainer({
         mandals.forEach((mandal) => {
             const el = document.createElement("button");
             el.className =
-                "bappamap-marker group relative block cursor-pointer focus:outline-none bg-transparent p-0 m-0 border-0";
+                "bappamap-marker group absolute cursor-pointer focus:outline-none bg-transparent p-0 m-0 border-0";
             el.style.width = "36px";
             el.style.height = "36px";
             el.setAttribute("tabindex", "0");
