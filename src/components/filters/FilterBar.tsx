@@ -99,7 +99,7 @@ export default function FilterBar({
                         value={searchQuery}
                         onChange={(e) => onSearchChange(e.target.value)}
                         placeholder={t("filters.searchPlaceholder", language)}
-                        className="w-full rounded-lg bg-brand-base/80 border border-brand-border pl-9 pr-9 py-2 text-xs sm:text-sm text-slate-100 placeholder-slate-400 focus:border-brand-marigold focus:outline-none focus:ring-1 focus:ring-brand-marigold transition-colors"
+                        className="w-full rounded-lg bg-brand-base/80 border border-brand-border pl-9 pr-9 py-2 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none focus:ring-1 focus:ring-brand-marigold transition-colors"
                         aria-label={t("filters.searchPlaceholder", language)}
                     />
                     {searchQuery && (
@@ -107,7 +107,7 @@ export default function FilterBar({
                             type="button"
                             onClick={() => onSearchChange("")}
                             aria-label={t("filters.clearSearch", language)}
-                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-white"
+                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-700 dark:hover:text-white"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,10 @@ export default function FilterBar({
 
                 {/* Counter and Reset */}
                 <div className="flex items-center justify-between sm:justify-end gap-3 text-xs">
-                    <span data-testid="filter-count-badge" className="text-slate-300 font-medium">
+                    <span
+                        data-testid="filter-count-badge"
+                        className="text-slate-700 dark:text-slate-300 font-medium"
+                    >
                         {t("filters.showingResults", language)
                             .replace("{count}", String(filteredCount))
                             .replace("{total}", String(totalCount))}
@@ -159,7 +162,7 @@ export default function FilterBar({
 
             {/* Bottom row: Filter Chips & Toggles */}
             <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-brand-border/60">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mr-1">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-400 mr-1">
                     {t("filters.crowdTitle", language)}:
                 </span>
 
@@ -181,7 +184,7 @@ export default function FilterBar({
                                 className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium border transition-all ${
                                     isSelected
                                         ? "ring-2 ring-brand-marigold " + opt.colorClass
-                                        : "border-brand-border text-slate-300 hover:border-slate-500 bg-brand-base/40"
+                                        : "border-brand-border text-slate-700 dark:text-slate-300 hover:border-slate-500 bg-brand-base/40"
                                 }`}
                             >
                                 <span className={`h-1.5 w-1.5 rounded-full ${opt.dotClass}`} />
@@ -202,12 +205,12 @@ export default function FilterBar({
                     className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium border transition-all ${
                         isParkingOnly
                             ? "border-brand-vermillion bg-brand-vermillion/20 text-brand-marigold ring-2 ring-brand-marigold/60"
-                            : "border-brand-border text-slate-300 hover:border-slate-500 bg-brand-base/40"
+                            : "border-brand-border text-slate-700 dark:text-slate-300 hover:border-slate-500 bg-brand-base/40"
                     }`}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-3.5 w-3.5 text-slate-300"
+                        className="h-3.5 w-3.5 text-slate-500 dark:text-slate-300"
                         viewBox="0 0 24 24"
                         fill="currentColor"
                     >
@@ -220,7 +223,7 @@ export default function FilterBar({
                 <div className="flex items-center gap-1.5 ml-auto sm:ml-0">
                     <label
                         htmlFor="min-rating-select"
-                        className="text-[11px] text-slate-400 font-medium"
+                        className="text-[11px] text-slate-600 dark:text-slate-400 font-medium"
                     >
                         {t("filters.minRating", language)}:
                     </label>
@@ -229,7 +232,7 @@ export default function FilterBar({
                         data-testid="filter-rating-select"
                         value={minRating}
                         onChange={(e) => onSetMinRating(parseFloat(e.target.value))}
-                        className="rounded-lg bg-brand-base border border-brand-border px-2 py-0.5 text-xs text-slate-200 focus:border-brand-marigold focus:outline-none"
+                        className="rounded-lg bg-brand-base border border-brand-border px-2 py-0.5 text-xs text-slate-800 dark:text-slate-200 focus:border-brand-marigold focus:outline-none"
                     >
                         <option value="0">{t("filters.allRatings", language)}</option>
                         <option value="4.0">★ 4.0+</option>

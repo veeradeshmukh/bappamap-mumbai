@@ -7,21 +7,48 @@
 :root {
     --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
     --font-marathi: "Tiro Devanagari Marathi", "Mukta", serif;
+
+    /* Light Theme RGB Channels (Warm coastal ivory & basalt stone accents) */
+    --brand-base: 250 248 245;
+    --brand-surface: 255 255 255;
+    --brand-elevated: 245 239 230;
+    --brand-border: 226 217 204;
+    --brand-subtle: 120 113 108;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+}
+
+.dark {
+    /* Dark Theme RGB Channels (Arabian Sea night & basalt architecture) */
+    --brand-base: 11 15 23;
+    --brand-surface: 20 26 36;
+    --brand-elevated: 29 38 53;
+    --brand-border: 42 54 75;
+    --brand-subtle: 100 116 139;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
 }
 
 body {
-    background-color: #0b0f17;
-    color: #f8fafc;
+    background-color: rgb(var(--brand-base));
+    color: var(--text-primary);
     font-family: var(--font-sans);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
 }
 
-/* Custom MapLibre Popup Basalt Overrides */
+/* Custom MapLibre Popup Overrides (Dark & Light) */
 .maplibregl-popup {
     max-width: 320px !important;
     z-index: 50;
+    position: absolute !important;
+    transition: none !important;
 }
 
 .maplibregl-popup-content {
@@ -31,21 +58,45 @@ body {
     border-radius: 12px !important;
     padding: 16px !important;
     box-shadow:
-        0 10px 25px -5px rgba(0, 0, 0, 0.7),
-        0 8px 10px -6px rgba(0, 0, 0, 0.7) !important;
+        0 10px 25px -5px rgba(0, 0, 0, 0.5),
+        0 8px 10px -6px rgba(0, 0, 0, 0.4) !important;
+}
+
+.light .maplibregl-popup-content {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #e2d9cc !important;
+    box-shadow:
+        0 10px 25px -5px rgba(0, 0, 0, 0.15),
+        0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
 }
 
 .maplibregl-popup-anchor-top .maplibregl-popup-tip {
     border-bottom-color: #141a24 !important;
 }
+.light .maplibregl-popup-anchor-top .maplibregl-popup-tip {
+    border-bottom-color: #ffffff !important;
+}
+
 .maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
     border-top-color: #141a24 !important;
 }
+.light .maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+    border-top-color: #ffffff !important;
+}
+
 .maplibregl-popup-anchor-left .maplibregl-popup-tip {
     border-right-color: #141a24 !important;
 }
+.light .maplibregl-popup-anchor-left .maplibregl-popup-tip {
+    border-right-color: #ffffff !important;
+}
+
 .maplibregl-popup-anchor-right .maplibregl-popup-tip {
     border-left-color: #141a24 !important;
+}
+.light .maplibregl-popup-anchor-right .maplibregl-popup-tip {
+    border-left-color: #ffffff !important;
 }
 
 .maplibregl-popup-close-button {
@@ -56,9 +107,17 @@ body {
     top: 4px !important;
 }
 
+.light .maplibregl-popup-close-button {
+    color: #64748b !important;
+}
+
 .maplibregl-popup-close-button:hover {
     color: #f8fafc !important;
     background: transparent !important;
+}
+
+.light .maplibregl-popup-close-button:hover {
+    color: #0f172a !important;
 }
 
 /* MapLibre Pin & Marker Positioning Lock */
@@ -78,7 +137,60 @@ body {
     box-sizing: border-box;
 }
 
-.maplibregl-popup {
-    position: absolute !important;
-    transition: none !important;
+/* Festive Background Animations */
+@keyframes festiveFall {
+    0% {
+        transform: translate3d(0, -60px, 0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(0, 105vh, 0);
+        opacity: 0;
+    }
+}
+
+@keyframes festiveSway {
+    0% {
+        transform: translate3d(-18px, 0, 0) rotate(-14deg);
+    }
+    100% {
+        transform: translate3d(18px, 0, 0) rotate(14deg);
+    }
+}
+
+@keyframes festivePetalSpin {
+    0% {
+        transform: rotate(-25deg) scale(0.92);
+    }
+    100% {
+        transform: rotate(25deg) scale(1.08);
+    }
+}
+
+.festive-petal-fall {
+    animation-name: festiveFall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.festive-petal-sway {
+    animation-name: festiveSway;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .festive-petal-fall,
+    .festive-petal-sway,
+    .festive-background {
+        animation: none !important;
+        display: none !important;
+    }
 }

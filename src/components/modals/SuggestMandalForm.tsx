@@ -122,7 +122,7 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                 <div>
                     <label
                         htmlFor="input-name-en"
-                        className="block text-xs font-semibold text-slate-300 mb-1"
+                        className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                     >
                         Mandal Name (English) *
                     </label>
@@ -134,13 +134,13 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                         value={nameEn}
                         onChange={(e) => setNameEn(e.target.value)}
                         placeholder="e.g. Girgaoncha Raja"
-                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-brand-marigold focus:outline-none"
+                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none"
                     />
                 </div>
                 <div>
                     <label
                         htmlFor="input-name-mr"
-                        className="block text-xs font-semibold text-brand-marigold font-marathi mb-1"
+                        className="block text-xs font-semibold text-amber-800 dark:text-brand-marigold font-marathi mb-1"
                     >
                         मंडळाचे नाव (मराठी) *
                     </label>
@@ -152,7 +152,7 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                         value={nameMr}
                         onChange={(e) => setNameMr(e.target.value)}
                         placeholder="उदा. गिरगावचा राजा"
-                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 font-marathi focus:border-brand-marigold focus:outline-none"
+                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 font-marathi focus:border-brand-marigold focus:outline-none"
                     />
                 </div>
             </div>
@@ -162,7 +162,7 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                 <div>
                     <label
                         htmlFor="input-locality-en"
-                        className="block text-xs font-semibold text-slate-300 mb-1"
+                        className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                     >
                         Locality (English) *
                     </label>
@@ -174,13 +174,13 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                         value={localityEn}
                         onChange={(e) => setLocalityEn(e.target.value)}
                         placeholder="e.g. Girgaon"
-                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-brand-marigold focus:outline-none"
+                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none"
                     />
                 </div>
                 <div>
                     <label
                         htmlFor="input-locality-mr"
-                        className="block text-xs font-semibold text-brand-marigold font-marathi mb-1"
+                        className="block text-xs font-semibold text-amber-800 dark:text-brand-marigold font-marathi mb-1"
                     >
                         परिसर (मराठी) *
                     </label>
@@ -192,13 +192,13 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                         value={localityMr}
                         onChange={(e) => setLocalityMr(e.target.value)}
                         placeholder="उदा. गिरगाव"
-                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 font-marathi focus:border-brand-marigold focus:outline-none"
+                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 font-marathi focus:border-brand-marigold focus:outline-none"
                     />
                 </div>
                 <div>
                     <label
                         htmlFor="select-bmc-ward"
-                        className="block text-xs font-semibold text-slate-300 mb-1"
+                        className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                     >
                         BMC Ward *
                     </label>
@@ -208,7 +208,7 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                         value={bmcWard}
                         data-testid="select-bmc-ward"
                         onChange={(e) => setBmcWard(e.target.value)}
-                        className="w-full rounded-lg bg-brand-base border border-brand-border px-2 py-1.5 text-xs text-white focus:border-brand-marigold focus:outline-none"
+                        className="w-full rounded-lg bg-brand-base border border-brand-border px-2 py-1.5 text-xs text-slate-900 dark:text-white focus:border-brand-marigold focus:outline-none"
                     >
                         {BMC_WARDS.map((w) => (
                             <option key={w.value} value={w.value}>
@@ -221,7 +221,7 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
 
             {/* Coordinates (Latitude & Longitude) */}
             <div className="space-y-1.5">
-                <div className="flex items-center justify-between text-[11px] text-slate-400">
+                <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400">
                     <span>
                         Coordinates (South Mumbai: 18.8900 to 19.0150 N, 72.7800 to 72.8700 E)
                     </span>
@@ -230,7 +230,7 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                     <div>
                         <label
                             htmlFor="input-latitude"
-                            className="block text-[11px] text-slate-400 mb-0.5"
+                            className="block text-[11px] text-slate-600 dark:text-slate-400 mb-0.5"
                         >
                             Latitude *
                         </label>
@@ -243,13 +243,13 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                             value={latitude}
                             onChange={(e) => setLatitude(e.target.value)}
                             placeholder="18.9554"
-                            className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-brand-marigold focus:outline-none"
+                            className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none"
                         />
                     </div>
                     <div>
                         <label
                             htmlFor="input-longitude"
-                            className="block text-[11px] text-slate-400 mb-0.5"
+                            className="block text-[11px] text-slate-600 dark:text-slate-400 mb-0.5"
                         >
                             Longitude *
                         </label>
@@ -262,7 +262,7 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                             value={longitude}
                             onChange={(e) => setLongitude(e.target.value)}
                             placeholder="72.8213"
-                            className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-brand-marigold focus:outline-none"
+                            className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none"
                         />
                     </div>
                 </div>
@@ -273,7 +273,7 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                 <div>
                     <label
                         htmlFor="input-founded-year"
-                        className="block text-xs font-semibold text-slate-300 mb-1"
+                        className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                     >
                         Founded Year
                     </label>
@@ -286,13 +286,13 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                         value={foundedYear}
                         onChange={(e) => setFoundedYear(e.target.value)}
                         placeholder="e.g. 1950"
-                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-brand-marigold focus:outline-none"
+                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none"
                     />
                 </div>
                 <div className="sm:col-span-2">
                     <label
                         htmlFor="input-description"
-                        className="block text-xs font-semibold text-slate-300 mb-1"
+                        className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                     >
                         History / Significance
                     </label>
@@ -303,7 +303,7 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Brief background or landmark details..."
-                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-brand-marigold focus:outline-none"
+                        className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none"
                     />
                 </div>
             </div>

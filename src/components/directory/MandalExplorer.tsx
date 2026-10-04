@@ -5,7 +5,11 @@ import MapContainer from "@/components/map/MapContainer";
 import FilterBar from "@/components/filters/FilterBar";
 import MandalCardList from "@/components/directory/MandalCardList";
 import ContributionModal from "@/components/modals/ContributionModal";
+import ThemeToggle from "@/components/common/ThemeToggle";
+import FestiveBackground from "@/components/ui/FestiveBackground";
+import GaneshaIcon from "@/components/icons/GaneshaIcon";
 import { useMandalFilters } from "@/hooks/useMandalFilters";
+import { useTheme } from "@/hooks/useTheme";
 import { filterMandals } from "@/lib/filters/engine";
 import { MandalItem } from "@/types/mandal";
 import { t } from "@/lib/i18n/translations";
@@ -30,6 +34,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
         hasActiveFilters
     } = useMandalFilters();
 
+    const { theme, toggleTheme } = useTheme();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     // 1. Filter mandals based on active filters and search query
@@ -66,35 +71,41 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
     );
 
     return (
-        <div className="min-h-screen flex flex-col bg-brand-base text-slate-100 selection:bg-brand-vermillion selection:text-white">
+        <div className="relative min-h-screen flex flex-col bg-brand-base text-slate-800 dark:text-slate-100 selection:bg-brand-vermillion selection:text-white">
+            {/* Festive Animated Background */}
+            <FestiveBackground />
+
             {/* Header */}
-            <header className="sticky top-0 z-30 w-full border-b border-brand-border bg-brand-base/95 backdrop-blur-md">
+            <header className="sticky top-0 z-30 w-full border-b border-brand-border bg-brand-base/90 dark:bg-brand-base/95 backdrop-blur-md">
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6">
                     {/* Brand */}
                     <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-vermillion shadow-lg shadow-red-900/40">
-                            <span className="text-lg font-bold text-white font-marathi">श्री</span>
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-500/20 via-brand-vermillion/20 to-amber-600/30 p-0.5 border border-brand-marigold/30 shadow-md">
+                            <GaneshaIcon size={38} className="w-9 h-9" />
                         </div>
                         <div>
                             <div className="flex items-center gap-2">
-                                <h1 className="text-base font-bold tracking-tight text-white sm:text-lg">
+                                <h1 className="text-base font-bold tracking-tight text-slate-900 dark:text-white sm:text-lg">
                                     {language === "mr" ? "बाप्पा मॅप" : "BappaMap"}{" "}
-                                    <span className="text-brand-marigold font-semibold">
+                                    <span className="text-brand-vermillion dark:text-brand-marigold font-semibold">
                                         {language === "mr" ? "मुंबई" : "Mumbai"}
                                     </span>
                                 </h1>
-                                <span className="rounded-full bg-brand-vermillion/25 px-2 py-0.5 text-[10px] font-semibold text-amber-200 border border-brand-vermillion/40">
+                                <span className="rounded-full bg-red-100 dark:bg-brand-vermillion/25 px-2 py-0.5 text-[10px] font-semibold text-red-800 dark:text-amber-200 border border-red-300 dark:border-brand-vermillion/40">
                                     {t("app.tagline", language)}
                                 </span>
                             </div>
-                            <p className="text-[11px] text-brand-marigold font-marathi line-clamp-1">
+                            <p className="text-[11px] text-brand-vermillion dark:text-brand-marigold font-marathi line-clamp-1">
                                 {t("app.subtitle", language)}
                             </p>
                         </div>
                     </div>
 
-                    {/* Controls: Language Switch & UGC Trigger */}
+                    {/* Controls: Theme Toggle, Language Switch & UGC Trigger */}
                     <div className="flex items-center gap-2 sm:gap-3">
+                        {/* Light / Dark Mode Switcher */}
+                        <ThemeToggle theme={theme} onToggle={toggleTheme} language={language} />
+
                         {/* Language Switcher */}
                         <div
                             role="group"
@@ -109,7 +120,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                                 className={`rounded px-2 py-1 transition-all ${
                                     language === "en"
                                         ? "bg-brand-vermillion font-semibold text-white shadow"
-                                        : "text-slate-400 hover:text-white"
+                                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                                 }`}
                             >
                                 EN
@@ -122,7 +133,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                                 className={`rounded px-2 py-1 font-marathi transition-all ${
                                     language === "mr"
                                         ? "bg-brand-vermillion font-semibold text-white shadow"
-                                        : "text-slate-400 hover:text-white"
+                                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                                 }`}
                             >
                                 मराठी
@@ -130,8 +141,8 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                         </div>
 
                         {/* Mandal count badge */}
-                        <div className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-brand-border bg-brand-surface px-2.5 py-1.5 text-xs font-medium text-slate-200">
-                            <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                        <div className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-brand-border bg-brand-surface px-2.5 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-200">
+                            <span className="h-2 w-2 rounded-full bg-emerald-500" />
                             <span>
                                 {filteredMandals.length} {t("nav.mandalsCount", language)}
                             </span>
@@ -142,7 +153,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                             type="button"
                             data-testid="add-review-modal-btn"
                             onClick={() => setIsModalOpen(true)}
-                            className="inline-flex items-center gap-1.5 rounded-lg bg-brand-vermillion px-3 py-1.5 text-xs font-semibold text-white shadow-md shadow-red-950/50 hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-marigold"
+                            className="inline-flex items-center gap-1.5 rounded-lg bg-brand-vermillion px-3 py-1.5 text-xs font-semibold text-white shadow-md shadow-red-950/30 hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-marigold"
                         >
                             {t("nav.addReview", language)}
                         </button>
@@ -151,7 +162,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
             </header>
 
             {/* Main Stage */}
-            <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 space-y-6">
+            <main className="relative z-10 flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 py-4 space-y-6">
                 {/* 1. Interactive Map Container */}
                 <section
                     aria-label={language === "mr" ? "परस्परसंवादी नकाशा" : "Interactive Map"}
@@ -162,6 +173,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                         filteredMandalSlugs={filteredMandalSlugs}
                         selectedMandalSlug={selectedMandalSlug}
                         language={language}
+                        theme={theme}
                         onSelectMandal={handlePinSelect}
                     />
                 </section>
@@ -192,11 +204,13 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
             </main>
 
             {/* Footer & Privacy Assurance */}
-            <footer className="mt-auto border-t border-brand-border bg-brand-surface/60 py-6 px-4 text-center text-xs text-slate-400">
+            <footer className="relative z-10 mt-auto border-t border-brand-border bg-brand-surface/80 py-6 px-4 text-center text-xs text-slate-700 dark:text-slate-300">
                 <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-                    <p>{t("footer.copyright", language)}</p>
-                    <div className="flex items-center gap-4 text-[11px] text-slate-400">
-                        <span className="inline-flex items-center gap-1 text-emerald-400">
+                    <p className="text-slate-700 dark:text-slate-300 font-medium">
+                        {t("footer.copyright", language)}
+                    </p>
+                    <div className="flex items-center gap-4 text-xs text-slate-700 dark:text-slate-300 font-medium">
+                        <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-400">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-3.5 w-3.5"
@@ -212,7 +226,9 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                             {t("footer.zeroGeo", language)}
                         </span>
                         <span>•</span>
-                        <span>{t("footer.osmAttribution", language)}</span>
+                        <span className="text-slate-700 dark:text-slate-300 font-medium">
+                            {t("footer.osmAttribution", language)}
+                        </span>
                     </div>
                 </div>
             </footer>

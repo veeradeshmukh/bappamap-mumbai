@@ -21,9 +21,9 @@ export default function TurnstileWidget({ onVerify }: TurnstileWidgetProps) {
     return (
         <div
             data-testid="turnstile-widget"
-            className="text-[11px] text-slate-400 flex items-center gap-1.5 pt-1"
+            className="text-xs text-slate-600 dark:text-slate-400 font-medium flex items-center gap-1.5 pt-1"
         >
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
             <span>Bot protection verified (Cloudflare Turnstile)</span>
         </div>
     );

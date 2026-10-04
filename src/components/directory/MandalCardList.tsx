@@ -42,10 +42,10 @@ export default function MandalCardList({
                         />
                     </svg>
                 </div>
-                <h4 className="text-base font-semibold text-white">
+                <h4 className="text-base font-semibold text-slate-900 dark:text-white">
                     {t("filters.noResults", language)}
                 </h4>
-                <p className="text-xs text-slate-400 max-w-sm">
+                <p className="text-xs text-slate-600 dark:text-slate-400 max-w-sm">
                     {t("filters.resetPrompt", language)}
                 </p>
                 <button

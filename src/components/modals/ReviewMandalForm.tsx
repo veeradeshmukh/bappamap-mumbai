@@ -103,7 +103,7 @@ export default function ReviewMandalForm({ mandals, language, onSuccess }: Revie
             <div>
                 <label
                     htmlFor="select-review-mandal"
-                    className="block text-xs font-semibold text-slate-300 mb-1"
+                    className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                 >
                     {language === "mr" ? "मंडळ निवडा *" : "Select Mandal *"}
                 </label>
@@ -113,7 +113,7 @@ export default function ReviewMandalForm({ mandals, language, onSuccess }: Revie
                     data-testid="select-review-mandal"
                     value={mandalSlug}
                     onChange={(e) => setMandalSlug(e.target.value)}
-                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-2 text-xs text-white focus:border-brand-marigold focus:outline-none"
+                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-2 text-xs text-slate-900 dark:text-white focus:border-brand-marigold focus:outline-none"
                 >
                     {mandals.map((m) => (
                         <option key={m.slug} value={m.slug}>
@@ -127,7 +127,7 @@ export default function ReviewMandalForm({ mandals, language, onSuccess }: Revie
             <div>
                 <label
                     htmlFor="input-review-author"
-                    className="block text-xs font-semibold text-slate-300 mb-1"
+                    className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                 >
                     {language === "mr" ? "आपले नाव (ऐच्छिक)" : "Your Name (Optional)"}
                 </label>
@@ -138,13 +138,13 @@ export default function ReviewMandalForm({ mandals, language, onSuccess }: Revie
                     value={authorName}
                     onChange={(e) => setAuthorName(e.target.value)}
                     placeholder={language === "mr" ? "उदा. भाविक रोहन" : "e.g. Devotee Rohan"}
-                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-brand-marigold focus:outline-none"
+                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none"
                 />
             </div>
 
             {/* 1-5 Star Rating */}
             <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                     {language === "mr" ? "दर्शन अनुभव रेटिंग *" : "Darshan Experience Rating *"}
                 </label>
                 <div
@@ -162,8 +162,8 @@ export default function ReviewMandalForm({ mandals, language, onSuccess }: Revie
                             onClick={() => setRating(star)}
                             className={`p-1.5 rounded-lg border transition-all focus:outline-none focus:ring-2 focus:ring-brand-marigold ${
                                 rating >= star
-                                    ? "bg-amber-500/20 border-amber-500/40 text-amber-400"
-                                    : "bg-brand-surface border-brand-border text-slate-600 hover:text-slate-400"
+                                    ? "bg-amber-500/20 border-amber-500/40 text-amber-500 dark:text-amber-400"
+                                    : "bg-brand-surface border-brand-border text-slate-400 hover:text-slate-600 dark:hover:text-slate-400"
                             }`}
                         >
                             <svg
@@ -175,13 +175,15 @@ export default function ReviewMandalForm({ mandals, language, onSuccess }: Revie
                             </svg>
                         </button>
                     ))}
-                    <span className="ml-2 text-xs font-semibold text-amber-300">{rating} / 5</span>
+                    <span className="ml-2 text-xs font-semibold text-amber-600 dark:text-amber-300">
+                        {rating} / 5
+                    </span>
                 </div>
             </div>
 
             {/* Live Crowd Observation (Chips) */}
             <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                     {language === "mr" ? "सध्याची गर्दी पातळी" : "Live Crowd Observation"}
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -197,7 +199,7 @@ export default function ReviewMandalForm({ mandals, language, onSuccess }: Revie
                             className={`rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-all ${
                                 crowdObservation === opt.value
                                     ? "bg-brand-vermillion border-brand-marigold text-white shadow-sm"
-                                    : "bg-brand-base border-brand-border text-slate-300 hover:border-slate-500"
+                                    : "bg-brand-base border-brand-border text-slate-700 dark:text-slate-300 hover:border-slate-500"
                             }`}
                         >
                             {t(opt.key, language)}
@@ -210,7 +212,7 @@ export default function ReviewMandalForm({ mandals, language, onSuccess }: Revie
             <div>
                 <label
                     htmlFor="textarea-review-comment"
-                    className="block text-xs font-semibold text-slate-300 mb-1"
+                    className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                 >
                     {language === "mr"
                         ? "पुनरावलोकन व अनुभव (किमान ५ अक्षरे) *"
@@ -228,7 +230,7 @@ export default function ReviewMandalForm({ mandals, language, onSuccess }: Revie
                             ? "दर्शन रांग, आरतीची वेळ, प्रसादाची सोय याबद्दल माहिती लिहा..."
                             : "Share darshan wait times, mukh/navas queue status, or arrangements..."
                     }
-                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-brand-marigold focus:outline-none"
+                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-2 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none"
                 />
             </div>
 

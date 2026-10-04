@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+    darkMode: "class",
     content: [
         "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,11 +11,11 @@ const config: Config = {
         extend: {
             colors: {
                 brand: {
-                    base: "#0B0F17",
-                    surface: "#141A24",
-                    elevated: "#1D2636",
-                    border: "#2A364B",
-                    subtle: "#1C2433",
+                    base: "rgb(var(--brand-base) / <alpha-value>)",
+                    surface: "rgb(var(--brand-surface) / <alpha-value>)",
+                    elevated: "rgb(var(--brand-elevated) / <alpha-value>)",
+                    border: "rgb(var(--brand-border) / <alpha-value>)",
+                    subtle: "rgb(var(--brand-subtle) / <alpha-value>)",
                     vermillion: "#D4301B",
                     "vermillion-glow": "rgba(212, 48, 27, 0.35)",
                     marigold: "#F5A623",

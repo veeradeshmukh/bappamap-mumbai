@@ -125,6 +125,24 @@ export const TRANSLATIONS: TranslationDictionary = {
         en: "reviews",
         mr: "पुनरावलोकने"
     },
+    "card.nearestStation": {
+        en: "Nearest Station",
+        mr: "जवळचे रेल्वे स्थानक"
+    },
+
+    // Theme Switcher
+    "theme.toggle": {
+        en: "Toggle color theme",
+        mr: "थीम बदला"
+    },
+    "theme.light": {
+        en: "Switch to light mode",
+        mr: "लाईट मोड सुरू करा"
+    },
+    "theme.dark": {
+        en: "Switch to dark mode",
+        mr: "डार्क मोड सुरू करा"
+    },
 
     // Footer & Notices
     "footer.copyright": {

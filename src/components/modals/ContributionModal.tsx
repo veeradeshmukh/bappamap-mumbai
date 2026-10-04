@@ -94,11 +94,11 @@ export default function ContributionModal({
                         <h2
                             id="contribution-modal-title"
                             data-testid="contribution-modal-title"
-                            className="text-lg font-bold text-white tracking-tight"
+                            className="text-lg font-bold text-slate-900 dark:text-white tracking-tight"
                         >
                             {t("modal.title", language)}
                         </h2>
-                        <p className="text-xs text-brand-marigold font-marathi mt-0.5">
+                        <p className="text-xs text-amber-700 dark:text-brand-marigold font-marathi mt-0.5">
                             {language === "mr"
                                 ? "दक्षिण मुंबई गणेशोत्सव समुदाय संचिका (कुलाबा ते लालबाग)"
                                 : "South Mumbai Ganeshotsav Community Directory"}
@@ -110,7 +110,7 @@ export default function ContributionModal({
                         data-testid="modal-close-btn"
                         aria-label="Close dialog"
                         onClick={onClose}
-                        className="rounded-lg p-1.5 text-slate-400 hover:bg-brand-base hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-brand-marigold"
+                        className="rounded-lg p-1.5 text-slate-500 dark:text-slate-400 hover:bg-brand-base hover:text-slate-900 dark:hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-brand-marigold"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -134,7 +134,7 @@ export default function ContributionModal({
                         data-testid="submission-success-receipt"
                         className="py-6 text-center space-y-4"
                     >
-                        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+                        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/40">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-8 w-8"
@@ -152,19 +152,19 @@ export default function ContributionModal({
                         </div>
 
                         <div>
-                            <h3 className="text-base font-bold text-white">
+                            <h3 className="text-base font-bold text-slate-900 dark:text-white">
                                 {t("modal.successTitle", language)}
                             </h3>
-                            <p className="mt-2 text-xs text-slate-300 max-w-md mx-auto leading-relaxed">
+                            <p className="mt-2 text-xs text-slate-600 dark:text-slate-300 max-w-md mx-auto leading-relaxed">
                                 {t("modal.successDetail", language)}
                             </p>
                         </div>
 
-                        <div className="inline-flex items-center gap-2 rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-400">
+                        <div className="inline-flex items-center gap-2 rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-600 dark:text-slate-400">
                             <span>Receipt ID:</span>
                             <code
                                 data-testid="receipt-submission-id"
-                                className="text-brand-marigold font-mono font-semibold"
+                                className="text-amber-700 dark:text-brand-marigold font-mono font-semibold"
                             >
                                 {submittedId}
                             </code>
@@ -201,7 +201,7 @@ export default function ContributionModal({
                                 className={`rounded-lg py-2 text-xs font-semibold transition-all ${
                                     activeTab === "suggest"
                                         ? "bg-brand-vermillion text-white shadow-sm"
-                                        : "text-slate-400 hover:text-white"
+                                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                                 }`}
                             >
                                 {t("modal.tabSuggest", language)}
@@ -217,7 +217,7 @@ export default function ContributionModal({
                                 className={`rounded-lg py-2 text-xs font-semibold transition-all ${
                                     activeTab === "review"
                                         ? "bg-brand-vermillion text-white shadow-sm"
-                                        : "text-slate-400 hover:text-white"
+                                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                                 }`}
                             >
                                 {t("modal.tabReview", language)}
@@ -233,7 +233,7 @@ export default function ContributionModal({
                                 className={`rounded-lg py-2 text-xs font-semibold transition-all ${
                                     activeTab === "photo"
                                         ? "bg-brand-vermillion text-white shadow-sm"
-                                        : "text-slate-400 hover:text-white"
+                                        : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                                 }`}
                             >
                                 {t("modal.tabPhoto", language)}

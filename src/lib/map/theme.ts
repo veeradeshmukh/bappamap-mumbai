@@ -4,7 +4,7 @@ import type { StyleSpecification } from "maplibre-gl";
  * Custom Dark Basalt Style Specification for MapLibre GL JS
  * Rooted in South Mumbai's basalt architecture and Arabian Sea night tones.
  */
-export const BAPPAMAP_STYLE: StyleSpecification = {
+export const BAPPAMAP_DARK_STYLE: StyleSpecification = {
     version: 8,
     name: "BappaMap Basalt Dark",
     sources: {
@@ -83,3 +83,89 @@ export const BAPPAMAP_STYLE: StyleSpecification = {
         }
     ]
 };
+
+/**
+ * Custom Light Coastal Style Specification for MapLibre GL JS
+ * Crisp warm ivory landmass with Arabian Sea coastal water accents.
+ */
+export const BAPPAMAP_LIGHT_STYLE: StyleSpecification = {
+    version: 8,
+    name: "BappaMap Coastal Light",
+    sources: {
+        openfreemap: {
+            type: "vector",
+            url: "https://tiles.openfreemap.org/planet"
+        }
+    },
+    glyphs: "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
+    layers: [
+        {
+            id: "background",
+            type: "background",
+            paint: {
+                "background-color": "#E2EEF9"
+            }
+        },
+        {
+            id: "land",
+            type: "fill",
+            source: "openfreemap",
+            "source-layer": "landcover",
+            paint: {
+                "fill-color": "#F8F5EE",
+                "fill-opacity": 0.95
+            }
+        },
+        {
+            id: "water",
+            type: "fill",
+            source: "openfreemap",
+            "source-layer": "water",
+            paint: {
+                "fill-color": "#CDE2F6",
+                "fill-opacity": 1.0
+            }
+        },
+        {
+            id: "roads-subtle",
+            type: "line",
+            source: "openfreemap",
+            "source-layer": "transportation",
+            filter: ["all", ["!=", "class", "motorway"], ["!=", "class", "primary"]],
+            paint: {
+                "line-color": "#E5DED0",
+                "line-width": ["interpolate", ["linear"], ["zoom"], 12, 0.5, 16, 1.5]
+            }
+        },
+        {
+            id: "roads-primary",
+            type: "line",
+            source: "openfreemap",
+            "source-layer": "transportation",
+            filter: ["any", ["==", "class", "motorway"], ["==", "class", "primary"]],
+            paint: {
+                "line-color": "#D0C2AC",
+                "line-width": ["interpolate", ["linear"], ["zoom"], 12, 1.2, 16, 3.0]
+            }
+        },
+        {
+            id: "place-labels",
+            type: "symbol",
+            source: "openfreemap",
+            "source-layer": "place",
+            layout: {
+                "text-field": ["coalesce", ["get", "name:en"], ["get", "name"]],
+                "text-font": ["Noto Sans Regular"],
+                "text-size": 11,
+                "text-letter-spacing": 0.05
+            },
+            paint: {
+                "text-color": "#475569",
+                "text-halo-color": "#FFFFFF",
+                "text-halo-width": 1.5
+            }
+        }
+    ]
+};
+
+export const BAPPAMAP_STYLE = BAPPAMAP_DARK_STYLE;

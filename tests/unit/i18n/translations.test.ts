@@ -28,12 +28,16 @@ describe("i18n Translations", () => {
             expect(t("nav.addReview", "en")).toBe("+ Add / Review Mandal");
             expect(t("filters.parkingNearby", "en")).toBe("Parking Nearby");
             expect(t("crowd.low", "en")).toBe("Low Crowd");
+            expect(t("card.nearestStation", "en")).toBe("Nearest Station");
+            expect(t("theme.toggle", "en")).toBe("Toggle color theme");
         });
 
         it("returns Marathi string when lang is 'mr'", () => {
             expect(t("nav.addReview", "mr")).toBe("+ मंडळ जोडा / पुनरावलोकन");
             expect(t("filters.parkingNearby", "mr")).toBe("जवळपास पार्किंग");
             expect(t("crowd.low", "mr")).toBe("कमी गर्दी");
+            expect(t("card.nearestStation", "mr")).toBe("जवळचे रेल्वे स्थानक");
+            expect(t("theme.toggle", "mr")).toBe("थीम बदला");
         });
 
         it("falls back to English when translation key is missing in Marathi", () => {

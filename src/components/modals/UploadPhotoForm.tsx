@@ -126,7 +126,7 @@ export default function UploadPhotoForm({ mandals, language, onSuccess }: Upload
             <div>
                 <label
                     htmlFor="select-photo-mandal"
-                    className="block text-xs font-semibold text-slate-300 mb-1"
+                    className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                 >
                     {language === "mr" ? "मंडळ निवडा *" : "Select Mandal *"}
                 </label>
@@ -136,7 +136,7 @@ export default function UploadPhotoForm({ mandals, language, onSuccess }: Upload
                     data-testid="select-photo-mandal"
                     value={mandalSlug}
                     onChange={(e) => setMandalSlug(e.target.value)}
-                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-2 text-xs text-white focus:border-brand-marigold focus:outline-none"
+                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-2 text-xs text-slate-900 dark:text-white focus:border-brand-marigold focus:outline-none"
                 >
                     {mandals.map((m) => (
                         <option key={m.slug} value={m.slug}>
@@ -150,7 +150,7 @@ export default function UploadPhotoForm({ mandals, language, onSuccess }: Upload
             <div>
                 <label
                     htmlFor="input-photo-contributor"
-                    className="block text-xs font-semibold text-slate-300 mb-1"
+                    className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                 >
                     {language === "mr" ? "आपले नाव (ऐच्छिक)" : "Your Name (Optional)"}
                 </label>
@@ -161,7 +161,7 @@ export default function UploadPhotoForm({ mandals, language, onSuccess }: Upload
                     value={contributorName}
                     onChange={(e) => setContributorName(e.target.value)}
                     placeholder={language === "mr" ? "उदा. भाविक रोहन" : "e.g. Devotee Rohan"}
-                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-brand-marigold focus:outline-none"
+                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none"
                 />
             </div>
 
@@ -169,7 +169,7 @@ export default function UploadPhotoForm({ mandals, language, onSuccess }: Upload
             <div>
                 <label
                     htmlFor="input-photo-caption"
-                    className="block text-xs font-semibold text-slate-300 mb-1"
+                    className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                 >
                     {language === "mr" ? "छायाचित्राचे वर्णन (ऐच्छिक)" : "Photo Caption (Optional)"}
                 </label>
@@ -185,7 +185,7 @@ export default function UploadPhotoForm({ mandals, language, onSuccess }: Upload
                             ? "उदा. संध्याकाळची आरती व मंडप सजावट..."
                             : "e.g. Evening Aarti decoration or pandal entrance..."
                     }
-                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:border-brand-marigold focus:outline-none"
+                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:border-brand-marigold focus:outline-none"
                 />
             </div>
 
@@ -193,7 +193,7 @@ export default function UploadPhotoForm({ mandals, language, onSuccess }: Upload
             <div>
                 <label
                     htmlFor="input-photo-file"
-                    className="block text-xs font-semibold text-slate-300 mb-1"
+                    className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                 >
                     {language === "mr"
                         ? "छायाचित्र निवडा (कमाल ५ MB) *"
@@ -205,7 +205,7 @@ export default function UploadPhotoForm({ mandals, language, onSuccess }: Upload
                     accept="image/jpeg,image/png,image/webp,image/heic"
                     data-testid="input-photo-file"
                     onChange={handleFileChange}
-                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-300 file:mr-3 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brand-surface file:text-brand-marigold hover:file:bg-brand-border cursor-pointer focus:outline-none"
+                    className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300 file:mr-3 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-brand-surface file:text-brand-marigold hover:file:bg-brand-border cursor-pointer focus:outline-none"
                 />
 
                 {isProcessing && (

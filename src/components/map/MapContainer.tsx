@@ -12,13 +12,15 @@ import {
     DEFAULT_ZOOM
 } from "@/lib/geo/bounds";
 import { getGoogleMapsUrl } from "@/lib/geo/google-maps";
-import { BAPPAMAP_STYLE } from "@/lib/map/theme";
+import { BAPPAMAP_DARK_STYLE, BAPPAMAP_LIGHT_STYLE } from "@/lib/map/theme";
+import { Theme } from "@/hooks/useTheme";
 
 interface MapContainerProps {
     mandals: MandalItem[];
     filteredMandalSlugs?: string[];
     selectedMandalSlug?: string | null;
     language?: Language;
+    theme?: Theme;
     onSelectMandal?: (mandal: MandalItem) => void;
 }
 
@@ -34,19 +36,28 @@ export default function MapContainer({
     filteredMandalSlugs,
     selectedMandalSlug,
     language = "en",
+    theme = "dark",
     onSelectMandal
 }: MapContainerProps) {
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<maplibregl.Map | null>(null);
     const markersRef = useRef<Map<string, MarkerEntry>>(new Map());
 
+    const themeRef = useRef(theme);
+    useEffect(() => {
+        themeRef.current = theme;
+    }, [theme]);
+
     // 1. Initialize MapLibre instance
     useEffect(() => {
         if (!mapContainerRef.current || mapInstanceRef.current) return;
 
+        const initialStyle =
+            themeRef.current === "dark" ? BAPPAMAP_DARK_STYLE : BAPPAMAP_LIGHT_STYLE;
+
         const map = new maplibregl.Map({
             container: mapContainerRef.current,
-            style: BAPPAMAP_STYLE,
+            style: initialStyle,
             center: MAP_CENTER,
             zoom: DEFAULT_ZOOM,
             minZoom: MIN_ZOOM,
@@ -65,6 +76,14 @@ export default function MapContainer({
         };
     }, []);
 
+    // 2. React to dynamic theme changes (Dark / Light)
+    useEffect(() => {
+        const map = mapInstanceRef.current;
+        if (!map) return;
+        const targetStyle = theme === "dark" ? BAPPAMAP_DARK_STYLE : BAPPAMAP_LIGHT_STYLE;
+        map.setStyle(targetStyle);
+    }, [theme]);
+
     const onSelectMandalRef = useRef(onSelectMandal);
     const filteredSlugsRef = useRef(filteredMandalSlugs);
     useEffect(() => {
@@ -72,7 +91,7 @@ export default function MapContainer({
         filteredSlugsRef.current = filteredMandalSlugs;
     });
 
-    // 2. Synchronize markers with mandals list and language
+    // 3. Synchronize markers with mandals list and language
     useEffect(() => {
         const map = mapInstanceRef.current;
         if (!map) return;
@@ -122,26 +141,48 @@ export default function MapContainer({
                 offset: 25,
                 closeButton: true,
                 closeOnClick: false
-            }).setHTML(`
+            }).setLngLat([mandal.longitude, mandal.latitude]).setHTML(`
                 <div data-testid="mandal-popup" class="space-y-2">
                     <div class="border-b border-brand-border pb-1.5">
-                        <h3 class="font-bold text-base text-white ${
+                        <h3 class="font-bold text-base text-slate-900 dark:text-white ${
                             language === "mr" ? "font-marathi text-lg" : "font-sans"
                         }">${primaryName}</h3>
                         ${
                             secondaryName && secondaryName !== primaryName
                                 ? `<p class="text-xs ${
                                       language === "mr"
-                                          ? "font-sans text-slate-300"
+                                          ? "font-sans text-slate-600 dark:text-slate-300"
                                           : "font-marathi text-brand-marigold font-medium"
                                   }">${secondaryName}</p>`
                                 : ""
                         }
                     </div>
-                    <div class="text-xs text-slate-300 space-y-1">
-                        <p><span class="text-slate-400">${t("card.locality", language)}:</span> ${locality}</p>
-                        <p><span class="text-slate-400">${t("card.founded", language)}:</span> ${mandal.foundedYear} • <span class="text-slate-400">${t("card.ward", language)}:</span> ${mandal.bmcWard}</p>
+                    <div class="text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                        <p><span class="text-slate-500 dark:text-slate-400">${t("card.locality", language)}:</span> ${locality}</p>
+                        <p><span class="text-slate-500 dark:text-slate-400">${t("card.founded", language)}:</span> ${mandal.foundedYear} • <span class="text-slate-500 dark:text-slate-400">${t("card.ward", language)}:</span> ${mandal.bmcWard}</p>
                     </div>
+
+                    ${
+                        mandal.attributes?.nearestStation
+                            ? `
+                    <div class="rounded bg-brand-base/80 p-2 border border-brand-border/80 text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 text-brand-marigold shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="16" height="16" x="4" y="3" rx="2" />
+                                <path d="M4 11h16" />
+                                <path d="M12 3v8" />
+                                <path d="m8 19-2 3" />
+                                <path d="m18 22-2-3" />
+                                <circle cx="8" cy="15" r="1" />
+                                <circle cx="16" cy="15" r="1" />
+                            </svg>
+                            <span class="font-medium text-slate-500 dark:text-slate-400">${t("card.nearestStation", language)}:</span>
+                        </div>
+                        <p class="font-semibold text-slate-800 dark:text-slate-200 mt-0.5 pl-5">${mandal.attributes.nearestStation}</p>
+                    </div>`
+                            : ""
+                    }
+
                     <div class="pt-2">
                         <a 
                             data-testid="google-maps-btn"
@@ -161,8 +202,37 @@ export default function MapContainer({
                 </div>
             `);
 
+            let isPinned = false;
+            let closeTimeout: ReturnType<typeof setTimeout> | null = null;
+
+            const cancelClose = () => {
+                if (closeTimeout) {
+                    clearTimeout(closeTimeout);
+                    closeTimeout = null;
+                }
+            };
+
+            const scheduleClose = () => {
+                cancelClose();
+                closeTimeout = setTimeout(() => {
+                    if (!isPinned && popup.isOpen()) {
+                        marker.togglePopup();
+                    }
+                }, 300);
+            };
+
             popup.on("open", () => {
                 onSelectMandalRef.current?.(mandal);
+                const popupEl = popup.getElement();
+                if (popupEl) {
+                    popupEl.addEventListener("mouseenter", cancelClose);
+                    popupEl.addEventListener("mouseleave", scheduleClose);
+                }
+            });
+
+            popup.on("close", () => {
+                isPinned = false;
+                cancelClose();
             });
 
             const marker = new maplibregl.Marker({
@@ -173,10 +243,33 @@ export default function MapContainer({
                 .setPopup(popup)
                 .addTo(map);
 
-            // Unified click and touch activation
+            // Hover Feature: Show details on hover with grace period
+            el.addEventListener("mouseenter", () => {
+                cancelClose();
+                if (!popup.isOpen()) {
+                    marker.togglePopup();
+                }
+            });
+
+            el.addEventListener("mouseleave", () => {
+                scheduleClose();
+            });
+
+            // Click / Touch: Toggles and pins the popup
             el.addEventListener("click", (e) => {
                 e.stopPropagation();
-                marker.togglePopup();
+                cancelClose();
+                if (popup.isOpen()) {
+                    if (isPinned) {
+                        isPinned = false;
+                        marker.togglePopup();
+                    } else {
+                        isPinned = true;
+                    }
+                } else {
+                    isPinned = true;
+                    marker.togglePopup();
+                }
             });
 
             // Accessible keyboard navigation (Enter / Space)
@@ -184,7 +277,18 @@ export default function MapContainer({
                 if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     e.stopPropagation();
-                    marker.togglePopup();
+                    cancelClose();
+                    if (popup.isOpen()) {
+                        if (isPinned) {
+                            isPinned = false;
+                            marker.togglePopup();
+                        } else {
+                            isPinned = true;
+                        }
+                    } else {
+                        isPinned = true;
+                        marker.togglePopup();
+                    }
                 }
             });
 
@@ -197,7 +301,7 @@ export default function MapContainer({
         });
     }, [mandals, language]);
 
-    // 3. Filter synchronization: show/hide pins matching active filters
+    // 4. Filter synchronization: show/hide pins matching active filters
     useEffect(() => {
         if (!filteredMandalSlugs) return;
         const activeSlugs = new Set(filteredMandalSlugs);
@@ -218,7 +322,7 @@ export default function MapContainer({
         });
     }, [filteredMandalSlugs]);
 
-    // 4. Programmatic Camera Flight when selected from directory card
+    // 5. Programmatic Camera Flight when selected from directory card
     useEffect(() => {
         if (!selectedMandalSlug || !mapInstanceRef.current) return;
 
@@ -244,7 +348,7 @@ export default function MapContainer({
                 className="w-full h-full min-h-[380px] sm:min-h-[460px] rounded-xl overflow-hidden shadow-2xl border border-brand-border"
             />
             {/* Viewport Boundary Notice */}
-            <div className="absolute bottom-2 left-2 z-10 rounded bg-brand-surface/90 px-2.5 py-1 text-[11px] text-slate-400 backdrop-blur-sm border border-brand-border">
+            <div className="absolute bottom-2 left-2 z-10 rounded bg-brand-surface/90 px-2.5 py-1 text-[11px] text-slate-700 dark:text-slate-300 backdrop-blur-sm border border-brand-border">
                 {t("map.viewportNotice", language)}
             </div>
         </div>
