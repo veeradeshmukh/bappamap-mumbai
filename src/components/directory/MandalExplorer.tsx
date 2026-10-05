@@ -46,26 +46,20 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
         return filteredMandals.map((m) => m.slug);
     }, [filteredMandals]);
 
-    // 2. Card click -> focus map pin
+    // 2. Card click -> focus map pin and scroll up to map
     const handleCardSelect = React.useCallback(
         (mandal: MandalItem) => {
             setSelectedMandalSlug(mandal.slug);
-            // On mobile, scroll up to map smoothly
-            if (window.innerWidth < 768) {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            }
+            // Scroll up to map smoothly so user can see the focused pin and popup
+            window.scrollTo({ top: 0, behavior: "smooth" });
         },
         [setSelectedMandalSlug]
     );
 
-    // 3. Map pin click -> focus card in directory
+    // 3. Map pin click -> update selected mandal in state without scrolling away from map
     const handlePinSelect = React.useCallback(
         (mandal: MandalItem) => {
             setSelectedMandalSlug(mandal.slug);
-            const cardElement = document.getElementById(`mandal-card-${mandal.slug}`);
-            if (cardElement) {
-                cardElement.scrollIntoView({ behavior: "smooth", block: "center" });
-            }
         },
         [setSelectedMandalSlug]
     );

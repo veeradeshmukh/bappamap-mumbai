@@ -73,4 +73,23 @@ test.describe("Sprint 1 Walking Skeleton: South Mumbai Map & Pins", () => {
         await expect(popup).toContainText("केशवजी नाईक चाळ");
         await expect(popup).toContainText("1893");
     });
+
+    test("should open popup on marker hover without scrolling the viewport", async ({ page }) => {
+        await page.goto("/");
+
+        const lalbaugPin = page.locator('[data-testid="mandal-pin-lalbaugcha-raja"]');
+        await expect(lalbaugPin).toBeVisible({ timeout: 10000 });
+
+        // Trigger hover event on the map pin
+        await lalbaugPin.dispatchEvent("mouseenter");
+
+        // Popup should appear on the map
+        const popup = page.locator('[data-testid="mandal-popup"]');
+        await expect(popup).toBeVisible();
+        await expect(popup).toContainText("Lalbaugcha Raja");
+
+        // Verify viewport did not scroll away to directory cards
+        const scrollY = await page.evaluate(() => window.scrollY);
+        expect(scrollY).toBe(0);
+    });
 });

@@ -440,7 +440,7 @@ export default function AdminDashboardPage() {
                                             disabled={actionInProgress === sub.id}
                                             data-testid={`approve-btn-${sub.id}`}
                                             onClick={() => handleAction(sub.id, "approve")}
-                                            className="rounded-lg bg-emerald-700 hover:bg-emerald-600 disabled:opacity-50 px-3 py-1.5 text-xs font-bold text-white transition-colors focus:outline-none focus:ring-2 focus:ring-brand-marigold"
+                                            className="rounded-lg bg-emerald-800 hover:bg-emerald-700 disabled:opacity-50 px-3 py-1.5 text-xs font-bold text-white transition-colors focus:outline-none focus:ring-2 focus:ring-brand-marigold"
                                         >
                                             Approve
                                         </button>

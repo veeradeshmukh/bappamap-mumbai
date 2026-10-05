@@ -42,6 +42,12 @@ export default function MapContainer({
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<maplibregl.Map | null>(null);
     const markersRef = useRef<Map<string, MarkerEntry>>(new Map());
+    const activeHoverPopupRef = useRef<{
+        slug: string;
+        close: () => void;
+        isPinned: () => boolean;
+    } | null>(null);
+    const lastSelectedViaPinRef = useRef<string | null>(null);
 
     const themeRef = useRef(theme);
     useEffect(() => {
@@ -222,7 +228,6 @@ export default function MapContainer({
             };
 
             popup.on("open", () => {
-                onSelectMandalRef.current?.(mandal);
                 const popupEl = popup.getElement();
                 if (popupEl) {
                     popupEl.addEventListener("mouseenter", cancelClose);
@@ -243,12 +248,32 @@ export default function MapContainer({
                 .setPopup(popup)
                 .addTo(map);
 
-            // Hover Feature: Show details on hover with grace period
+            // Hover Feature: Show details on hover with grace period (does not trigger selection or scroll)
             el.addEventListener("mouseenter", () => {
+                // If another unpinned popup is open from hovering a different pin, close it
+                if (
+                    activeHoverPopupRef.current &&
+                    activeHoverPopupRef.current.slug !== mandal.slug
+                ) {
+                    if (!activeHoverPopupRef.current.isPinned()) {
+                        activeHoverPopupRef.current.close();
+                    }
+                }
+
                 cancelClose();
                 if (!popup.isOpen()) {
                     marker.togglePopup();
                 }
+
+                activeHoverPopupRef.current = {
+                    slug: mandal.slug,
+                    close: () => {
+                        if (popup.isOpen()) {
+                            marker.togglePopup();
+                        }
+                    },
+                    isPinned: () => isPinned
+                };
             });
 
             el.addEventListener("mouseleave", () => {
@@ -259,6 +284,14 @@ export default function MapContainer({
             el.addEventListener("click", (e) => {
                 e.stopPropagation();
                 cancelClose();
+
+                // Close any other open popups so only the active mandal is shown
+                markersRef.current.forEach((item) => {
+                    if (item.slug !== mandal.slug && item.popup.isOpen()) {
+                        item.popup.remove();
+                    }
+                });
+
                 if (popup.isOpen()) {
                     if (isPinned) {
                         isPinned = false;
@@ -270,6 +303,8 @@ export default function MapContainer({
                     isPinned = true;
                     marker.togglePopup();
                 }
+                lastSelectedViaPinRef.current = mandal.slug;
+                onSelectMandalRef.current?.(mandal);
             });
 
             // Accessible keyboard navigation (Enter / Space)
@@ -278,6 +313,14 @@ export default function MapContainer({
                     e.preventDefault();
                     e.stopPropagation();
                     cancelClose();
+
+                    // Close any other open popups so only the active mandal is shown
+                    markersRef.current.forEach((item) => {
+                        if (item.slug !== mandal.slug && item.popup.isOpen()) {
+                            item.popup.remove();
+                        }
+                    });
+
                     if (popup.isOpen()) {
                         if (isPinned) {
                             isPinned = false;
@@ -289,6 +332,8 @@ export default function MapContainer({
                         isPinned = true;
                         marker.togglePopup();
                     }
+                    lastSelectedViaPinRef.current = mandal.slug;
+                    onSelectMandalRef.current?.(mandal);
                 }
             });
 
@@ -326,12 +371,25 @@ export default function MapContainer({
     useEffect(() => {
         if (!selectedMandalSlug || !mapInstanceRef.current) return;
 
+        // Skip flying if the selection was initiated directly by clicking the marker pin
+        if (lastSelectedViaPinRef.current === selectedMandalSlug) {
+            lastSelectedViaPinRef.current = null;
+            return;
+        }
+
         const entry = markersRef.current.get(selectedMandalSlug);
         if (!entry) return;
 
+        // Close any other open popups so only the selected mandal's popup is active
+        markersRef.current.forEach((item) => {
+            if (item.slug !== selectedMandalSlug && item.popup.isOpen()) {
+                item.popup.remove();
+            }
+        });
+
         mapInstanceRef.current.flyTo({
             center: [entry.mandal.longitude, entry.mandal.latitude],
-            zoom: 15.5,
+            zoom: 14.5,
             essential: true
         });
 
