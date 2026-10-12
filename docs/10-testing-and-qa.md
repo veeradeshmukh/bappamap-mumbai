@@ -187,7 +187,7 @@ Playwright executes all E2E tests against three standard responsive viewports:
 
 ## 6. Document Cross-References
 
-- [01-PRD.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/01-PRD.md) — Product success metrics.
-- [05-frontend-prd.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/05-frontend-prd.md) — Pin interaction and filter specifications.
-- [09-security-and-privacy.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/09-security-and-privacy.md) — Security boundaries and privacy guarantees.
-- [11-deployment-and-ops.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/11-deployment-and-ops.md) — CI/CD execution pipeline.
+- [01-PRD.md](docs/01-PRD.md) — Product success metrics.
+- [05-frontend-prd.md](docs/05-frontend-prd.md) — Pin interaction and filter specifications.
+- [09-security-and-privacy.md](docs/09-security-and-privacy.md) — Security boundaries and privacy guarantees.
+- [11-deployment-and-ops.md](docs/11-deployment-and-ops.md) — CI/CD execution pipeline.

@@ -1,9 +1,8 @@
 # BappaMap Mumbai: High-Performance, Privacy-Preserving Geospatial Crowdsourcing and Real-Time Event Architecture for Mega-Festival Navigation
 
-**Ranveer Deshmukh**  
-*Department of Computer Science & Engineering*  
-*Autonomous Agentic Systems Laboratory*  
-Email: ranveer.deshmukh110804@gmail.com  
+**Veera Deshmukh**  
+*Department of Biomedical Engineering*  
+Email: desh.veera@gmail.com  
 
 ---
 

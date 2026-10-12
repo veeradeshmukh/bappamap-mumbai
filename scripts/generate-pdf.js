@@ -14,7 +14,7 @@ function parseMarkdownWithMath(mdContent) {
         return `@@DISPLAY_MATH_${id}@@`;
     });
 
-    // 2. Protect inline math ($...$) - ensuring single-line formulas
+    // 2. Protect inline math ($...$)
     text = text.replace(/\$([^$\n]+?)\$/g, (match, math) => {
         const id = inlineMath.length;
         inlineMath.push(math.trim());
@@ -57,7 +57,7 @@ async function buildOnePageReport(browser) {
 <style>
     @page {
         size: letter;
-        margin: 7mm 10mm 7mm 10mm;
+        margin: 9mm 11mm 9mm 11mm;
     }
 
     *, *::before, *::after {
@@ -70,8 +70,8 @@ async function buildOnePageReport(browser) {
 
     body {
         font-family: "Times New Roman", Times, Georgia, serif;
-        font-size: 7.9pt;
-        line-height: 1.13;
+        font-size: 8.5pt;
+        line-height: 1.22;
         color: #050505;
         background: #fff;
         margin: 0;
@@ -80,31 +80,31 @@ async function buildOnePageReport(browser) {
 
     .paper-header {
         text-align: center;
-        margin-bottom: 5pt;
-        padding-bottom: 3pt;
-        border-bottom: 0.5pt solid #333;
+        margin-bottom: 8pt;
+        padding-bottom: 4.5pt;
+        border-bottom: 0.6pt solid #333;
     }
 
     .paper-title {
-        font-size: 13pt;
+        font-size: 14.5pt;
         font-weight: bold;
-        line-height: 1.14;
-        margin: 0 0 2.5pt 0;
+        line-height: 1.18;
+        margin: 0 0 3.5pt 0;
         color: #000;
         letter-spacing: -0.1pt;
     }
 
     .paper-authors {
-        font-size: 7.8pt;
-        margin-bottom: 3pt;
-        line-height: 1.18;
+        font-size: 8.6pt;
+        margin-bottom: 2pt;
+        line-height: 1.25;
         color: #222;
     }
 
     .abstract-box {
-        margin: 0 0 4.5pt 0;
-        font-size: 7.4pt;
-        line-height: 1.12;
+        margin: 0 0 8pt 0;
+        font-size: 8.0pt;
+        line-height: 1.20;
         text-align: justify;
     }
 
@@ -114,8 +114,8 @@ async function buildOnePageReport(browser) {
     }
 
     .index-terms {
-        font-size: 7.0pt;
-        margin-top: 2pt;
+        font-size: 7.6pt;
+        margin-top: 3pt;
     }
 
     .index-terms strong {
@@ -124,31 +124,31 @@ async function buildOnePageReport(browser) {
 
     .paper-body {
         column-count: 2;
-        column-gap: 12pt;
+        column-gap: 13pt;
         text-align: justify;
     }
 
     h2 {
-        font-size: 8.2pt;
+        font-size: 8.8pt;
         font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 0.3pt;
         text-align: center;
-        margin: 4.5pt 0 1.5pt 0;
-        padding-top: 1.5pt;
-        border-top: 0.4pt solid #aaa;
+        margin: 7pt 0 3pt 0;
+        padding-top: 3pt;
+        border-top: 0.5pt solid #aaa;
     }
 
     h3 {
-        font-size: 7.8pt;
+        font-size: 8.4pt;
         font-weight: bold;
         font-style: italic;
-        margin: 3pt 0 1pt 0;
+        margin: 5pt 0 2pt 0;
     }
 
     p {
-        margin: 0 0 2.5pt 0;
-        text-indent: 7pt;
+        margin: 0 0 4pt 0;
+        text-indent: 9pt;
     }
 
     p:first-of-type, .no-indent {
@@ -158,14 +158,14 @@ async function buildOnePageReport(browser) {
     /* ASCII Diagrams & Code */
     pre {
         background-color: #f8f9fa;
-        border: 0.4pt solid #888;
+        border: 0.5pt solid #888;
         border-radius: 1.5pt;
-        padding: 2.5pt 3pt;
+        padding: 3.5pt 4.5pt;
         font-family: Consolas, "Courier New", Courier, monospace;
-        font-size: 4.8pt;
-        line-height: 1.05;
+        font-size: 5.1pt;
+        line-height: 1.10;
         white-space: pre;
-        margin: 2.5pt 0;
+        margin: 4pt 0;
         page-break-inside: avoid;
         break-inside: avoid;
         max-width: 100%;
@@ -175,14 +175,14 @@ async function buildOnePageReport(browser) {
 
     code {
         font-family: Consolas, "Courier New", Courier, monospace;
-        font-size: 6.8pt;
+        font-size: 7.2pt;
         background-color: #f1f2f4;
         padding: 0.2pt 1.5pt;
         border-radius: 1pt;
     }
 
     pre code {
-        font-size: 4.8pt;
+        font-size: inherit;
         background: transparent;
         padding: 0;
     }
@@ -191,65 +191,65 @@ async function buildOnePageReport(browser) {
     table {
         width: 100%;
         border-collapse: collapse;
-        margin: 2.5pt 0;
-        font-size: 6.6pt;
-        line-height: 1.08;
+        margin: 4pt 0;
+        font-size: 7.1pt;
+        line-height: 1.15;
         page-break-inside: avoid;
         break-inside: avoid;
-        border-top: 1pt solid #000;
-        border-bottom: 1pt solid #000;
+        border-top: 1.1pt solid #000;
+        border-bottom: 1.1pt solid #000;
     }
 
     th, td {
-        padding: 1.2pt 2pt;
+        padding: 2.0pt 2.8pt;
         text-align: left;
     }
 
     th {
         font-weight: bold;
         border-bottom: 0.6pt solid #000;
-        font-size: 6.2pt;
+        font-size: 6.6pt;
         text-transform: uppercase;
     }
 
     ul, ol {
-        margin: 1.5pt 0 2.5pt 0;
-        padding-left: 9pt;
+        margin: 2pt 0 3.5pt 0;
+        padding-left: 10pt;
     }
 
     li {
-        margin-bottom: 0.8pt;
-        font-size: 7.6pt;
-        line-height: 1.1;
+        margin-bottom: 1.2pt;
+        font-size: 8.2pt;
+        line-height: 1.18;
     }
 
     /* Math formulas */
     .katex-display-wrapper {
-        margin: 1.5pt 0;
+        margin: 3pt 0;
         text-align: center;
     }
 
     .katex-display {
-        margin: 1.5pt 0 !important;
-        font-size: 0.85em !important;
+        margin: 2pt 0 !important;
+        font-size: 0.92em !important;
     }
 
     /* References */
     .references-section {
-        margin-top: 3.5pt;
+        margin-top: 5.5pt;
     }
 
     .references-section h2 {
-        margin-top: 3pt;
-        margin-bottom: 1.5pt;
+        margin-top: 4pt;
+        margin-bottom: 2pt;
     }
 
     .references-section p {
-        text-indent: -8pt;
-        padding-left: 8pt;
-        font-size: 6.6pt;
-        line-height: 1.08;
-        margin-bottom: 1.2pt;
+        text-indent: -9pt;
+        padding-left: 9pt;
+        font-size: 7.1pt;
+        line-height: 1.16;
+        margin-bottom: 2.2pt;
     }
 </style>
 </head>
@@ -258,7 +258,7 @@ async function buildOnePageReport(browser) {
 <div class="paper-header">
     <div class="paper-title">BappaMap Mumbai: High-Performance, Privacy-Preserving Geospatial Crowdsourcing and Real-Time Event Architecture for Mega-Festival Navigation</div>
     <div class="paper-authors">
-        <strong>Ranveer Deshmukh</strong> • <em>Dept. of Computer Science & Engineering, Autonomous Agentic Systems Lab</em> • ranveer.deshmukh110804@gmail.com
+        <strong>Veera Deshmukh</strong> • <em>Department of Biomedical Engineering</em> • desh.veera@gmail.com
     </div>
 </div>
 
@@ -280,20 +280,20 @@ async function buildOnePageReport(browser) {
 
     const page = await browser.newPage();
     await page.setContent(html, { waitUntil: 'networkidle' });
-    await page.waitForTimeout(1000); // Allow KaTeX auto-render to complete
+    await page.waitForTimeout(1000);
 
     await page.pdf({
         path: outPdfPath,
         format: 'Letter',
         printBackground: true,
         displayHeaderFooter: true,
-        headerTemplate: '<div style="width:100%; font-size:6.5pt; font-family:\'Times New Roman\', serif; color:#666; text-align:right; padding-right:10mm;">IEEE 1-PAGE TECHNICAL REPORT • BAPPAMAP MUMBAI</div>',
+        headerTemplate: '<div style="width:100%; font-size:6.5pt; font-family:\'Times New Roman\', serif; color:#666; text-align:right; padding-right:11mm;">IEEE 1-PAGE TECHNICAL REPORT • BAPPAMAP MUMBAI</div>',
         footerTemplate: '<div style="width:100%; font-size:7pt; font-family:\'Times New Roman\', serif; color:#333; text-align:center;"><span class="pageNumber"></span></div>',
         margin: {
-            top: '8mm',
-            bottom: '8mm',
-            left: '10mm',
-            right: '10mm'
+            top: '9mm',
+            bottom: '9mm',
+            left: '11mm',
+            right: '11mm'
         }
     });
 
@@ -396,10 +396,10 @@ async function buildFullReport(browser) {
         width: 100%;
         max-width: 100%;
         font-family: Consolas, "Courier New", Courier, monospace;
-        font-size: 5.5pt;
+        font-size: 5.6pt;
         line-height: 1.08;
         background-color: #f8f9fa;
-        border: 0.5pt solid #888;
+        border: 0.5pt solid #777;
         border-radius: 2pt;
         padding: 5pt 8pt;
         overflow: visible;
@@ -477,9 +477,9 @@ async function buildFullReport(browser) {
 <div class="paper-header">
     <div class="paper-title">BappaMap Mumbai: High-Performance, Privacy-Preserving Geospatial Crowdsourcing and Real-Time Event Architecture for Mega-Festival Navigation</div>
     <div class="paper-authors">
-        <strong>Ranveer Deshmukh</strong><br>
-        <em>Department of Computer Science & Engineering, Autonomous Agentic Systems Laboratory</em><br>
-        Email: ranveer.deshmukh110804@gmail.com
+        <strong>Veera Deshmukh</strong><br>
+        <em>Department of Biomedical Engineering</em><br>
+        Email: desh.veera@gmail.com
     </div>
 </div>
 <div class="abstract-box">
@@ -517,7 +517,7 @@ async function buildFullReport(browser) {
 function cleanOnePageBody(html) {
     let content = html;
     content = content.replace(/<h1[^>]*>[\s\S]*?<\/h1>/i, '');
-    content = content.replace(/<p><strong>Ranveer Deshmukh<\/strong>[\s\S]*?<\/p>/i, '');
+    content = content.replace(/<p><strong>Veera Deshmukh<\/strong>[\s\S]*?<\/p>/i, '');
     content = content.replace(/<hr\s*\/?>/gi, '');
     content = content.replace(/<h3[^>]*>Abstract<\/h3>[\s\S]*?(?=<h2)/i, '');
     content = content.replace(/<h2[^>]*>References<\/h2>([\s\S]*)/i, (m, p1) => `<div class="references-section"><h2>References</h2>${p1}</div>`);
@@ -527,7 +527,7 @@ function cleanOnePageBody(html) {
 function cleanFullBody(html) {
     let content = html;
     content = content.replace(/<h1[^>]*>[\s\S]*?<\/h1>/i, '');
-    content = content.replace(/<p><strong>Ranveer Deshmukh<\/strong>[\s\S]*?<\/p>/i, '');
+    content = content.replace(/<p><strong>Veera Deshmukh<\/strong>[\s\S]*?<\/p>/i, '');
     content = content.replace(/<hr\s*\/?>/gi, '');
     content = content.replace(/<h3[^>]*>Abstract<\/h3>[\s\S]*?(?=<h2)/i, '');
     content = content.replace(/<h3[^>]*>Index Terms<\/h3>[\s\S]*?(?=<h2)/i, '');

@@ -122,6 +122,6 @@ Before any component is marked as complete, it must satisfy this checklist:
 
 ## 8. Document Cross-References
 
-- [01-PRD.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/01-PRD.md) — Product vision and requirements.
-- [05-frontend-prd.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/05-frontend-prd.md) — Component contracts and performance budgets.
-- [07-content-and-data.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/07-content-and-data.md) — Verified cultural data and mandal names.
+- [01-PRD.md](docs/01-PRD.md) — Product vision and requirements.
+- [05-frontend-prd.md](docs/05-frontend-prd.md) — Component contracts and performance budgets.
+- [07-content-and-data.md](docs/07-content-and-data.md) — Verified cultural data and mandal names.

@@ -109,7 +109,7 @@ During Mumbai's 10-day Ganeshotsav festival, millions of visitors navigate South
 
 ## 6. Document Cross-References
 
-- [02-architecture.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/02-architecture.md) — Technical system design and edge caching strategy.
-- [03-database-schema.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/03-database-schema.md) — Database schema, PostGIS geometry, and migrations.
-- [05-frontend-prd.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/05-frontend-prd.md) — Map behaviors, component contracts, and accessibility specs.
-- [08-trust-and-safety.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/08-trust-and-safety.md) — Moderation rules, quarantine flow, and spam prevention.
+- [02-architecture.md](docs/02-architecture.md) — Technical system design and edge caching strategy.
+- [03-database-schema.md](docs/03-database-schema.md) — Database schema, PostGIS geometry, and migrations.
+- [05-frontend-prd.md](docs/05-frontend-prd.md) — Map behaviors, component contracts, and accessibility specs.
+- [08-trust-and-safety.md](docs/08-trust-and-safety.md) — Moderation rules, quarantine flow, and spam prevention.

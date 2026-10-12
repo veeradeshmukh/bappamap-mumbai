@@ -59,6 +59,6 @@ Every record in the launch dataset adheres to strict journalistic and geospatial
 
 ## 5. Document Cross-References
 
-- [01-PRD.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/01-PRD.md) — Product requirements and bounds definition.
-- [03-database-schema.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/03-database-schema.md) — PostgreSQL table definitions and spatial columns.
-- [05-frontend-prd.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/05-frontend-prd.md) — Map pin placement and Google Maps deep link formatting.
+- [01-PRD.md](docs/01-PRD.md) — Product requirements and bounds definition.
+- [03-database-schema.md](docs/03-database-schema.md) — PostgreSQL table definitions and spatial columns.
+- [05-frontend-prd.md](docs/05-frontend-prd.md) — Map pin placement and Google Maps deep link formatting.

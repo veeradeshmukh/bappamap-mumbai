@@ -173,7 +173,7 @@ jobs:
 
 ## 6. Document Cross-References
 
-- [02-architecture.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/02-architecture.md) — System design and request flow.
-- [04-backend-prd.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/04-backend-prd.md) — API contract and background workers.
-- [09-security-and-privacy.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/09-security-and-privacy.md) — Secrets and threat modeling.
-- [10-testing-and-qa.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/10-testing-and-qa.md) — Automated CI test gates.
+- [02-architecture.md](docs/02-architecture.md) — System design and request flow.
+- [04-backend-prd.md](docs/04-backend-prd.md) — API contract and background workers.
+- [09-security-and-privacy.md](docs/09-security-and-privacy.md) — Secrets and threat modeling.
+- [10-testing-and-qa.md](docs/10-testing-and-qa.md) — Automated CI test gates.

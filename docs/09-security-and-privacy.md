@@ -102,7 +102,7 @@ _(Note: The following represents an engineering compliance checklist for review 
 
 ## 7. Document Cross-References
 
-- [02-architecture.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/02-architecture.md) — Edge network and quarantine storage.
-- [04-backend-prd.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/04-backend-prd.md) — Backend validation and error formats.
-- [08-trust-and-safety.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/08-trust-and-safety.md) — Moderation engine and takedown workflows.
-- [10-testing-and-qa.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/10-testing-and-qa.md) — Automated security and geolocation tests.
+- [02-architecture.md](docs/02-architecture.md) — Edge network and quarantine storage.
+- [04-backend-prd.md](docs/04-backend-prd.md) — Backend validation and error formats.
+- [08-trust-and-safety.md](docs/08-trust-and-safety.md) — Moderation engine and takedown workflows.
+- [10-testing-and-qa.md](docs/10-testing-and-qa.md) — Automated security and geolocation tests.
