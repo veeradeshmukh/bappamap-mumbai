@@ -18,23 +18,23 @@ const CROWD_BADGE_STYLES: Record<
 > = {
     low: {
         labelKey: "crowd.low",
-        badgeClass: "bg-emerald-950/40 text-emerald-400 border-emerald-500/30",
-        dotClass: "bg-emerald-400"
+        badgeClass: "bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-500/30",
+        dotClass: "bg-emerald-700 dark:bg-emerald-400"
     },
     moderate: {
         labelKey: "crowd.moderate",
-        badgeClass: "bg-amber-950/40 text-amber-400 border-amber-500/30",
-        dotClass: "bg-amber-400"
+        badgeClass: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-500/30",
+        dotClass: "bg-amber-700 dark:bg-amber-400"
     },
     heavy: {
         labelKey: "crowd.heavy",
-        badgeClass: "bg-orange-950/40 text-orange-400 border-orange-500/30",
-        dotClass: "bg-orange-400"
+        badgeClass: "bg-orange-100 text-orange-900 border-orange-300 dark:bg-orange-950/40 dark:text-orange-400 dark:border-orange-500/30",
+        dotClass: "bg-orange-700 dark:bg-orange-400"
     },
     very_heavy: {
         labelKey: "crowd.very_heavy",
-        badgeClass: "bg-red-950/40 text-red-400 border-red-500/30",
-        dotClass: "bg-red-400"
+        badgeClass: "bg-red-100 text-red-900 border-red-300 dark:bg-red-950/40 dark:text-red-400 dark:border-red-500/30",
+        dotClass: "bg-red-700 dark:bg-red-400"
     }
 };
 
@@ -150,7 +150,7 @@ export default function MandalCard({ mandal, language, isSelected, onSelect }: M
                 )}
 
                 {mandal.avgRating && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-brand-base px-2 py-0.5 text-[11px] font-medium text-amber-500 dark:text-amber-300 border border-brand-border">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-brand-base px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:text-amber-300 border border-brand-border">
                         <span>★</span>
                         <span>{mandal.avgRating.toFixed(1)}</span>
                         {mandal.reviewCount && (

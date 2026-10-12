@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { QuarantineSubmission, ModerationStatus } from "@/lib/submissions/quarantine-store";
+import { QuarantineSubmission, ModerationStatus } from "@/types/submission";
 
 export default function AdminDashboardPage() {
     const router = useRouter();
@@ -24,7 +24,7 @@ export default function AdminDashboardPage() {
             setIsLoading(true);
             try {
                 const query = status === "all" ? "" : `?status=${status}`;
-                const res = await fetch(`/api/admin/moderation/queue${query}`);
+                const res = await fetch(`/api/submissions${query}`, { cache: "no-store" });
 
                 if (res.status === 401) {
                     router.push("/admin/login");
@@ -37,12 +37,49 @@ export default function AdminDashboardPage() {
                 }
 
                 const data = await res.json();
-                setSubmissions(data.submissions || []);
-                setStats(
-                    data.stats || { total: 0, pending: 0, approved: 0, rejected: 0, flagged: 0 }
-                );
-            } catch {
-                // Network error handled gracefully
+                const rawList: Array<Record<string, unknown>> = Array.isArray(data)
+                    ? data
+                    : Array.isArray(data.submissions)
+                        ? data.submissions
+                        : [];
+
+                const normalizedSubmissions: QuarantineSubmission[] = rawList.map((item) => {
+                    let parsedPayload: Record<string, unknown> = {};
+                    if (typeof item.payload === "string") {
+                        try {
+                            parsedPayload = JSON.parse(item.payload);
+                        } catch {
+                            parsedPayload = {};
+                        }
+                    } else if (item.payload && typeof item.payload === "object") {
+                        parsedPayload = item.payload as Record<string, unknown>;
+                    }
+
+                    return {
+                        id: String(item.id || ""),
+                        submissionType: (item.submissionType || item.submission_type || "new_mandal") as "new_mandal" | "review" | "photo",
+                        payload: parsedPayload,
+                        status: ((item.status as string) || "pending") as ModerationStatus,
+                        createdAt: String(item.createdAt || item.created_at || new Date().toISOString()),
+                        photoDataUrl: (item.photoDataUrl as string) || (parsedPayload.photoDataUrl as string) || undefined,
+                        reviewedAt: item.reviewedAt ? String(item.reviewedAt) : undefined,
+                        reviewedBy: item.reviewedBy ? String(item.reviewedBy) : undefined,
+                        reviewerNotes: item.reviewerNotes ? String(item.reviewerNotes) : undefined
+                    };
+                });
+
+                const statsData = data.stats || {
+                    total: normalizedSubmissions.length,
+                    pending: normalizedSubmissions.filter((s) => s.status === "pending").length,
+                    approved: normalizedSubmissions.filter((s) => s.status === "approved").length,
+                    rejected: normalizedSubmissions.filter((s) => s.status === "rejected").length,
+                    flagged: normalizedSubmissions.filter((s) => s.status === "flagged").length
+                };
+
+                setSubmissions(normalizedSubmissions);
+                setStats(statsData);
+            } catch (error) {
+                console.error("Network or parsing error:", error);
             } finally {
                 setIsLoading(false);
             }
@@ -59,7 +96,7 @@ export default function AdminDashboardPage() {
         const notes = reviewerNotesMap[id] || "";
 
         try {
-            const res = await fetch(`/api/admin/moderation/${id}`, {
+            const res = await fetch(`/api/submissions/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ action, reviewerNotes: notes })
@@ -241,7 +278,9 @@ export default function AdminDashboardPage() {
                                         </span>
                                     </div>
                                     <span className="text-[11px] text-slate-400">
-                                        {new Date(sub.createdAt).toLocaleString("en-IN")}
+                                        {sub.createdAt && !isNaN(new Date(sub.createdAt).getTime())
+                                            ? new Date(sub.createdAt).toLocaleString("en-IN")
+                                            : "Recent"}
                                     </span>
                                 </div>
 

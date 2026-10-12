@@ -97,18 +97,33 @@ export default function MapContainer({
         filteredSlugsRef.current = filteredMandalSlugs;
     });
 
+    const prevLanguageRef = useRef(language);
+
     // 3. Synchronize markers with mandals list and language
     useEffect(() => {
         const map = mapInstanceRef.current;
         if (!map) return;
 
-        // Clear existing markers
-        markersRef.current.forEach(({ marker }) => marker.remove());
-        markersRef.current.clear();
+        if (prevLanguageRef.current !== language) {
+            markersRef.current.forEach(({ marker }) => marker.remove());
+            markersRef.current.clear();
+            prevLanguageRef.current = language;
+        } else {
+            const currentSlugs = new Set(mandals.map((m) => m.slug));
+            markersRef.current.forEach(({ marker, slug }) => {
+                if (!currentSlugs.has(slug)) {
+                    marker.remove();
+                    markersRef.current.delete(slug);
+                }
+            });
+        }
 
         const activeSlugs = filteredSlugsRef.current ? new Set(filteredSlugsRef.current) : null;
 
         mandals.forEach((mandal) => {
+            if (markersRef.current.has(mandal.slug)) {
+                return;
+            }
             const el = document.createElement("button");
             el.className =
                 "bappamap-marker group absolute cursor-pointer focus:outline-none bg-transparent p-0 m-0 border-0";
@@ -292,16 +307,14 @@ export default function MapContainer({
                     }
                 });
 
-                if (popup.isOpen()) {
-                    if (isPinned) {
-                        isPinned = false;
-                        marker.togglePopup();
-                    } else {
-                        isPinned = true;
-                    }
+                if (popup.isOpen() && isPinned) {
+                    isPinned = false;
+                    popup.remove();
                 } else {
                     isPinned = true;
-                    marker.togglePopup();
+                    if (!popup.isOpen()) {
+                        popup.addTo(map);
+                    }
                 }
                 lastSelectedViaPinRef.current = mandal.slug;
                 onSelectMandalRef.current?.(mandal);

@@ -13,6 +13,13 @@ export interface MandalAttributes {
     [key: string]: unknown;
 }
 
+export interface QueueCrowdInfo {
+    level: CrowdLevel;
+    confidence: number;
+    lastUpdated?: string | null;
+    reportCount?: number;
+}
+
 export interface MandalItem {
     id?: string;
     slug: string;
@@ -30,4 +37,6 @@ export interface MandalItem {
     avgRating?: number;
     reviewCount?: number;
     attributes?: MandalAttributes;
+    mukhDarshanCrowd?: QueueCrowdInfo;
+    charanSparshCrowd?: QueueCrowdInfo;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import MapContainer from "@/components/map/MapContainer";
 import FilterBar from "@/components/filters/FilterBar";
 import MandalCardList from "@/components/directory/MandalCardList";
@@ -36,11 +36,135 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
 
     const { theme, toggleTheme } = useTheme();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [mandals, setMandals] = useState<MandalItem[]>(initialMandals);
+
+    useEffect(() => {
+        setMandals(initialMandals);
+    }, [initialMandals]);
+
+    // Live update on client mount, window focus, and Real-Time SSE
+    useEffect(() => {
+        let isMounted = true;
+        const fetchFreshMandals = async () => {
+            try {
+                const res = await fetch("/api/mandals", {
+                    cache: "no-store"
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (isMounted && Array.isArray(data) && data.length > 0) {
+                        setMandals((prev) => {
+                            if (prev.length === data.length && prev.every((m, i) => m.slug === data[i].slug && m.currentCrowdLevel === data[i].currentCrowdLevel && m.avgRating === data[i].avgRating)) {
+                                return prev;
+                            }
+                            return data;
+                        });
+                    }
+                }
+            } catch {
+                // Ignore network error in offline mode
+            }
+        };
+
+        fetchFreshMandals();
+        window.addEventListener("focus", fetchFreshMandals);
+
+        // Real-Time Server-Sent Events (SSE) stream
+        let eventSource: EventSource | null = null;
+        try {
+            eventSource = new EventSource("/api/events");
+
+            eventSource.addEventListener("mandal_approved", (e: MessageEvent) => {
+                try {
+                    const eventData = JSON.parse(e.data);
+                    if (eventData?.mandal && isMounted) {
+                        setMandals((prev) => {
+                            const exists = prev.some((m) => m.slug === eventData.mandal.slug);
+                            if (exists) {
+                                return prev.map((m) =>
+                                    m.slug === eventData.mandal.slug ? { ...m, ...eventData.mandal } : m
+                                );
+                            }
+                            return [...prev, eventData.mandal];
+                        });
+                    }
+                } catch (err) {
+                    console.error("Error processing mandal_approved SSE:", err);
+                }
+            });
+
+            eventSource.addEventListener("crowd_updated", (e: MessageEvent) => {
+                try {
+                    const eventData = JSON.parse(e.data);
+                    if (eventData?.slug && isMounted) {
+                        setMandals((prev) =>
+                            prev.map((m) => {
+                                if (m.slug === eventData.slug) {
+                                    const updated = { ...m };
+                                    if (eventData.crowdLevel) {
+                                        updated.currentCrowdLevel = eventData.crowdLevel;
+                                    }
+                                    if (eventData.queueType === "charan_sparsh") {
+                                        updated.charanSparshCrowd = {
+                                            level: eventData.crowdLevel,
+                                            confidence: 0.8,
+                                            lastUpdated: new Date().toISOString()
+                                        };
+                                    } else {
+                                        updated.mukhDarshanCrowd = {
+                                            level: eventData.crowdLevel,
+                                            confidence: 0.8,
+                                            lastUpdated: new Date().toISOString()
+                                        };
+                                    }
+                                    return updated;
+                                }
+                                return m;
+                            })
+                        );
+                    }
+                } catch (err) {
+                    console.error("Error processing crowd_updated SSE:", err);
+                }
+            });
+
+            eventSource.addEventListener("review_approved", (e: MessageEvent) => {
+                try {
+                    const eventData = JSON.parse(e.data);
+                    if (eventData?.slug && isMounted) {
+                        setMandals((prev) =>
+                            prev.map((m) =>
+                                m.slug === eventData.slug
+                                    ? {
+                                          ...m,
+                                          avgRating: eventData.newRating ?? m.avgRating,
+                                          reviewCount: eventData.reviewCount ?? m.reviewCount
+                                      }
+                                    : m
+                            )
+                        );
+                    }
+                } catch (err) {
+                    console.error("Error processing review_approved SSE:", err);
+                }
+            });
+        } catch {
+            // SSE connection fallback
+        }
+
+        return () => {
+            isMounted = false;
+            window.removeEventListener("focus", fetchFreshMandals);
+            if (eventSource) {
+                eventSource.close();
+            }
+        };
+    }, []);
 
     // 1. Filter mandals based on active filters and search query
     const filteredMandals = useMemo(() => {
-        return filterMandals(initialMandals, filters, searchQuery);
-    }, [initialMandals, filters, searchQuery]);
+        return filterMandals(mandals, filters, searchQuery);
+    }, [mandals, filters, searchQuery]);
 
     const filteredMandalSlugs = useMemo(() => {
         return filteredMandals.map((m) => m.slug);
@@ -163,7 +287,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                     className="w-full h-[400px] sm:h-[480px] rounded-xl overflow-hidden shadow-2xl"
                 >
                     <MapContainer
-                        mandals={initialMandals}
+                        mandals={mandals}
                         filteredMandalSlugs={filteredMandalSlugs}
                         selectedMandalSlug={selectedMandalSlug}
                         language={language}
@@ -178,7 +302,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                     filters={filters}
                     language={language}
                     filteredCount={filteredMandals.length}
-                    totalCount={initialMandals.length}
+                    totalCount={mandals.length}
                     hasActiveFilters={hasActiveFilters}
                     onSearchChange={setSearchQuery}
                     onToggleCrowd={toggleCrowdLevel}
@@ -231,7 +355,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
             <ContributionModal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
-                mandals={initialMandals}
+                mandals={mandals}
                 language={language}
             />
         </div>
