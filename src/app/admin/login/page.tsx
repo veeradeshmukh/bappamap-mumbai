@@ -24,7 +24,7 @@ export default function AdminLoginPage() {
 
             if (!res.ok) {
                 const data = await res.json();
-                setErrorMessage(data.error || "Invalid admin credentials.");
+                setErrorMessage(data.detail || data.error || "Invalid admin password.");
                 setIsSubmitting(false);
                 return;
             }

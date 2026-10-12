@@ -10,6 +10,7 @@ interface MandalCardProps {
     language: Language;
     isSelected: boolean;
     onSelect: (mandal: MandalItem) => void;
+    onOpenGallery?: (mandal: MandalItem) => void;
 }
 
 const CROWD_BADGE_STYLES: Record<
@@ -18,27 +19,27 @@ const CROWD_BADGE_STYLES: Record<
 > = {
     low: {
         labelKey: "crowd.low",
-        badgeClass: "bg-emerald-950/40 text-emerald-400 border-emerald-500/30",
-        dotClass: "bg-emerald-400"
+        badgeClass: "bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-500/30",
+        dotClass: "bg-emerald-700 dark:bg-emerald-400"
     },
     moderate: {
         labelKey: "crowd.moderate",
-        badgeClass: "bg-amber-950/40 text-amber-400 border-amber-500/30",
-        dotClass: "bg-amber-400"
+        badgeClass: "bg-amber-100 text-amber-900 border-amber-300 dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-500/30",
+        dotClass: "bg-amber-700 dark:bg-amber-400"
     },
     heavy: {
         labelKey: "crowd.heavy",
-        badgeClass: "bg-orange-950/40 text-orange-400 border-orange-500/30",
-        dotClass: "bg-orange-400"
+        badgeClass: "bg-orange-100 text-orange-900 border-orange-300 dark:bg-orange-950/40 dark:text-orange-400 dark:border-orange-500/30",
+        dotClass: "bg-orange-700 dark:bg-orange-400"
     },
     very_heavy: {
         labelKey: "crowd.very_heavy",
-        badgeClass: "bg-red-950/40 text-red-400 border-red-500/30",
-        dotClass: "bg-red-400"
+        badgeClass: "bg-red-100 text-red-900 border-red-300 dark:bg-red-950/40 dark:text-red-400 dark:border-red-500/30",
+        dotClass: "bg-red-700 dark:bg-red-400"
     }
 };
 
-export default function MandalCard({ mandal, language, isSelected, onSelect }: MandalCardProps) {
+export default function MandalCard({ mandal, language, isSelected, onSelect, onOpenGallery }: MandalCardProps) {
     const primaryName = getLocalizedField(mandal, "name", language);
     const secondaryName = language === "mr" ? mandal.nameEn : mandal.nameMr;
     const locality = getLocalizedField(mandal, "locality", language);
@@ -58,6 +59,33 @@ export default function MandalCard({ mandal, language, isSelected, onSelect }: M
                     : "border-brand-border bg-brand-surface/70 hover:border-brand-marigold/50 hover:bg-brand-surface shadow-md"
             }`}
         >
+            {/* Photo preview banner if approved photos exist */}
+            {mandal.photos && mandal.photos.length > 0 && (
+                <div
+                    data-testid={`card-gallery-banner-${mandal.slug}`}
+                    className="relative mb-3 h-36 w-full rounded-lg overflow-hidden bg-black/40 border border-brand-border cursor-pointer group/img"
+                    onClick={() => onOpenGallery?.(mandal)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                            onOpenGallery?.(mandal);
+                        }
+                    }}
+                    aria-label={`View photos of ${primaryName}`}
+                >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        src={mandal.photos[0].url}
+                        alt={mandal.photos[0].caption || primaryName}
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover/img:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                    <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-md bg-black/70 backdrop-blur-sm px-2 py-0.5 text-[11px] font-medium text-white border border-white/20">
+                        📷 {mandal.photos.length} {t("card.photos", language)}
+                    </span>
+                </div>
+            )}
             {/* Top metadata row: Founded Year & BMC Ward */}
             <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-2">
                 <span className="inline-flex items-center gap-1 font-semibold uppercase tracking-wider text-amber-700 dark:text-brand-marigold">
@@ -150,7 +178,7 @@ export default function MandalCard({ mandal, language, isSelected, onSelect }: M
                 )}
 
                 {mandal.avgRating && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-brand-base px-2 py-0.5 text-[11px] font-medium text-amber-500 dark:text-amber-300 border border-brand-border">
+                    <span className="inline-flex items-center gap-1 rounded-full bg-brand-base px-2 py-0.5 text-[11px] font-medium text-amber-800 dark:text-amber-300 border border-brand-border">
                         <span>★</span>
                         <span>{mandal.avgRating.toFixed(1)}</span>
                         {mandal.reviewCount && (
@@ -177,6 +205,21 @@ export default function MandalCard({ mandal, language, isSelected, onSelect }: M
                     <span className="inline-flex items-center gap-1 rounded-full bg-brand-base px-2 py-0.5 text-[11px] text-slate-600 dark:text-slate-400 font-medium border border-brand-border">
                         {t("card.noParking", language)}
                     </span>
+                )}
+
+                {mandal.photos && mandal.photos.length > 0 && onOpenGallery && (
+                    <button
+                        type="button"
+                        data-testid={`card-gallery-badge-${mandal.slug}`}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onOpenGallery(mandal);
+                        }}
+                        className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 hover:bg-amber-500/20 px-2.5 py-0.5 text-[11px] font-semibold text-amber-900 dark:text-brand-marigold border border-amber-500/40 transition-colors cursor-pointer"
+                    >
+                        <span>📷</span>
+                        <span>{mandal.photos.length} {t("card.photos", language)}</span>
+                    </button>
                 )}
             </div>
 

@@ -129,6 +129,34 @@ export const TRANSLATIONS: TranslationDictionary = {
         en: "Nearest Station",
         mr: "जवळचे रेल्वे स्थानक"
     },
+    "card.photos": {
+        en: "Photos",
+        mr: "छायाचित्रे"
+    },
+    "card.viewPhotos": {
+        en: "Photos",
+        mr: "छायाचित्रे"
+    },
+    "gallery.title": {
+        en: "Community Photos",
+        mr: "समुदाय छायाचित्रे"
+    },
+    "gallery.by": {
+        en: "Photo by",
+        mr: "छायाचित्र:"
+    },
+    "gallery.close": {
+        en: "Close gallery",
+        mr: "गॅलरी बंद करा"
+    },
+    "gallery.previous": {
+        en: "Previous photo",
+        mr: "मागील छायाचित्र"
+    },
+    "gallery.next": {
+        en: "Next photo",
+        mr: "पुढील छायाचित्र"
+    },
 
     // Theme Switcher
     "theme.toggle": {

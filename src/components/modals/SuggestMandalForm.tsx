@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TurnstileWidget from "./TurnstileWidget";
 import { Language } from "@/lib/i18n/translations";
+import { instantLocalTransliterate, fetchMarathiTransliteration } from "@/lib/i18n/transliterate";
 
 interface SuggestMandalFormProps {
     language: Language;
@@ -21,8 +22,12 @@ const BMC_WARDS = [
 export default function SuggestMandalForm({ language, onSuccess }: SuggestMandalFormProps) {
     const [nameEn, setNameEn] = useState("");
     const [nameMr, setNameMr] = useState("");
+    const [isNameMrManual, setIsNameMrManual] = useState(false);
+
     const [localityEn, setLocalityEn] = useState("");
     const [localityMr, setLocalityMr] = useState("");
+    const [isLocalityMrManual, setIsLocalityMrManual] = useState(false);
+
     const [bmcWard, setBmcWard] = useState("D");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
@@ -32,6 +37,50 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
     const [turnstileToken, setTurnstileToken] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    // Auto-transliterate Name (English -> Marathi)
+    useEffect(() => {
+        if (!nameEn.trim()) {
+            if (!isNameMrManual) setNameMr("");
+            return;
+        }
+
+        if (isNameMrManual) return;
+
+        const instant = instantLocalTransliterate(nameEn);
+        setNameMr(instant);
+
+        const timer = setTimeout(async () => {
+            const refined = await fetchMarathiTransliteration(nameEn);
+            if (!isNameMrManual && refined) {
+                setNameMr(refined);
+            }
+        }, 250);
+
+        return () => clearTimeout(timer);
+    }, [nameEn, isNameMrManual]);
+
+    // Auto-transliterate Locality (English -> Marathi)
+    useEffect(() => {
+        if (!localityEn.trim()) {
+            if (!isLocalityMrManual) setLocalityMr("");
+            return;
+        }
+
+        if (isLocalityMrManual) return;
+
+        const instant = instantLocalTransliterate(localityEn);
+        setLocalityMr(instant);
+
+        const timer = setTimeout(async () => {
+            const refined = await fetchMarathiTransliteration(localityEn);
+            if (!isLocalityMrManual && refined) {
+                setLocalityMr(refined);
+            }
+        }, 250);
+
+        return () => clearTimeout(timer);
+    }, [localityEn, isLocalityMrManual]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -138,19 +187,29 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                     />
                 </div>
                 <div>
-                    <label
-                        htmlFor="input-name-mr"
-                        className="block text-xs font-semibold text-amber-800 dark:text-brand-marigold font-marathi mb-1"
-                    >
-                        मंडळाचे नाव (मराठी) *
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                        <label
+                            htmlFor="input-name-mr"
+                            className="block text-xs font-semibold text-amber-800 dark:text-brand-marigold font-marathi"
+                        >
+                            मंडळाचे नाव (मराठी) *
+                        </label>
+                        {!isNameMrManual && nameMr && (
+                            <span className="text-[10px] font-sans text-amber-600 dark:text-amber-400 font-medium">
+                                ✨ Auto-translated
+                            </span>
+                        )}
+                    </div>
                     <input
                         id="input-name-mr"
                         type="text"
                         required
                         data-testid="input-name-mr"
                         value={nameMr}
-                        onChange={(e) => setNameMr(e.target.value)}
+                        onChange={(e) => {
+                            setNameMr(e.target.value);
+                            setIsNameMrManual(e.target.value.trim().length > 0);
+                        }}
                         placeholder="उदा. गिरगावचा राजा"
                         className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 font-marathi focus:border-brand-marigold focus:outline-none"
                     />
@@ -178,19 +237,29 @@ export default function SuggestMandalForm({ language, onSuccess }: SuggestMandal
                     />
                 </div>
                 <div>
-                    <label
-                        htmlFor="input-locality-mr"
-                        className="block text-xs font-semibold text-amber-800 dark:text-brand-marigold font-marathi mb-1"
-                    >
-                        परिसर (मराठी) *
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                        <label
+                            htmlFor="input-locality-mr"
+                            className="block text-xs font-semibold text-amber-800 dark:text-brand-marigold font-marathi"
+                        >
+                            परिसर (मराठी) *
+                        </label>
+                        {!isLocalityMrManual && localityMr && (
+                            <span className="text-[10px] font-sans text-amber-600 dark:text-amber-400 font-medium">
+                                ✨ Auto-translated
+                            </span>
+                        )}
+                    </div>
                     <input
                         id="input-locality-mr"
                         type="text"
                         required
                         data-testid="input-locality-mr"
                         value={localityMr}
-                        onChange={(e) => setLocalityMr(e.target.value)}
+                        onChange={(e) => {
+                            setLocalityMr(e.target.value);
+                            setIsLocalityMrManual(e.target.value.trim().length > 0);
+                        }}
                         placeholder="उदा. गिरगाव"
                         className="w-full rounded-lg bg-brand-base border border-brand-border px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 font-marathi focus:border-brand-marigold focus:outline-none"
                     />

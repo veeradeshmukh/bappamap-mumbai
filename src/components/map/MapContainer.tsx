@@ -22,6 +22,7 @@ interface MapContainerProps {
     language?: Language;
     theme?: Theme;
     onSelectMandal?: (mandal: MandalItem) => void;
+    onOpenGallery?: (mandal: MandalItem) => void;
 }
 
 interface MarkerEntry {
@@ -37,11 +38,16 @@ export default function MapContainer({
     selectedMandalSlug,
     language = "en",
     theme = "dark",
-    onSelectMandal
+    onSelectMandal,
+    onOpenGallery
 }: MapContainerProps) {
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const mapInstanceRef = useRef<maplibregl.Map | null>(null);
     const markersRef = useRef<Map<string, MarkerEntry>>(new Map());
+    const onOpenGalleryRef = useRef(onOpenGallery);
+    useEffect(() => {
+        onOpenGalleryRef.current = onOpenGallery;
+    });
     const activeHoverPopupRef = useRef<{
         slug: string;
         close: () => void;
@@ -97,18 +103,33 @@ export default function MapContainer({
         filteredSlugsRef.current = filteredMandalSlugs;
     });
 
+    const prevLanguageRef = useRef(language);
+
     // 3. Synchronize markers with mandals list and language
     useEffect(() => {
         const map = mapInstanceRef.current;
         if (!map) return;
 
-        // Clear existing markers
-        markersRef.current.forEach(({ marker }) => marker.remove());
-        markersRef.current.clear();
+        if (prevLanguageRef.current !== language) {
+            markersRef.current.forEach(({ marker }) => marker.remove());
+            markersRef.current.clear();
+            prevLanguageRef.current = language;
+        } else {
+            const currentSlugs = new Set(mandals.map((m) => m.slug));
+            markersRef.current.forEach(({ marker, slug }) => {
+                if (!currentSlugs.has(slug)) {
+                    marker.remove();
+                    markersRef.current.delete(slug);
+                }
+            });
+        }
 
         const activeSlugs = filteredSlugsRef.current ? new Set(filteredSlugsRef.current) : null;
 
         mandals.forEach((mandal) => {
+            if (markersRef.current.has(mandal.slug)) {
+                return;
+            }
             const el = document.createElement("button");
             el.className =
                 "bappamap-marker group absolute cursor-pointer focus:outline-none bg-transparent p-0 m-0 border-0";
@@ -189,7 +210,21 @@ export default function MapContainer({
                             : ""
                     }
 
-                    <div class="pt-2">
+                    <div class="pt-2 space-y-1.5">
+                        ${
+                            mandal.photos && mandal.photos.length > 0
+                                ? `
+                        <button 
+                            type="button"
+                            data-testid="popup-gallery-btn"
+                            data-gallery-slug="${mandal.slug}"
+                            class="bappamap-popup-gallery-btn inline-flex w-full items-center justify-center gap-1.5 rounded-md border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-900 dark:text-brand-marigold transition-colors cursor-pointer"
+                        >
+                            <span>📷</span>
+                            <span>${t("card.photos", language)} (${mandal.photos.length})</span>
+                        </button>`
+                                : ""
+                        }
                         <a 
                             data-testid="google-maps-btn"
                             href="${gmapsUrl}" 
@@ -292,16 +327,14 @@ export default function MapContainer({
                     }
                 });
 
-                if (popup.isOpen()) {
-                    if (isPinned) {
-                        isPinned = false;
-                        marker.togglePopup();
-                    } else {
-                        isPinned = true;
-                    }
+                if (popup.isOpen() && isPinned) {
+                    isPinned = false;
+                    popup.remove();
                 } else {
                     isPinned = true;
-                    marker.togglePopup();
+                    if (!popup.isOpen()) {
+                        popup.addTo(map);
+                    }
                 }
                 lastSelectedViaPinRef.current = mandal.slug;
                 onSelectMandalRef.current?.(mandal);
@@ -397,6 +430,26 @@ export default function MapContainer({
             entry.marker.togglePopup();
         }
     }, [selectedMandalSlug]);
+
+    // Handle clicks inside popups (e.g. Gallery trigger)
+    useEffect(() => {
+        const container = mapContainerRef.current;
+        if (!container) return;
+        const handleContainerClick = (e: MouseEvent) => {
+            const btn = (e.target as HTMLElement).closest(".bappamap-popup-gallery-btn");
+            if (btn) {
+                const slug = btn.getAttribute("data-gallery-slug");
+                const m = mandals.find((item) => item.slug === slug);
+                if (m && onOpenGalleryRef.current) {
+                    onOpenGalleryRef.current(m);
+                }
+            }
+        };
+        container.addEventListener("click", handleContainerClick);
+        return () => {
+            container.removeEventListener("click", handleContainerClick);
+        };
+    }, [mandals]);
 
     return (
         <div className="relative w-full h-full min-h-[380px] sm:min-h-[460px]">
