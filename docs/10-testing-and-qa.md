@@ -24,30 +24,41 @@ Our quality assurance protocols adhere strictly to engineering best practices:
 
 ```mermaid
 flowchart TD
-    subgraph UnitTests["Vitest Unit & Integration Suites"]
-        GeoTests["1. Geolocation Ban Check (ESLint + AST)"]
-        BoundsTests["2. South Mumbai Bounds Validator"]
-        GUrlTests["3. Google Maps Universal URL Generator"]
-        ZodTests["4. Zod Input Schema & Bounds Enforcement"]
-        CanvasTests["5. Canvas EXIF Stripper & WebP Encoder"]
+    subgraph BackendTests["Pytest Backend & PostGIS Integration"]
+        PytestAuth["1. Admin Session Auth & Argon2id Timing-Safe Tests"]
+        PytestDecay["2. 120-Min Linear Crowd Decay & Queue-Specific Logic"]
+        PytestMandals["3. Mandals PostGIS Spatial Queries & BBox Filters"]
+        PytestSSE["4. Real-Time SSE Broadcaster & Event Streaming"]
+        PytestModeration["5. Submissions Quarantine & Moderation Audit Trail"]
+        RuffLint["6. Ruff Backend Code Standards & Static Linter"]
     end
 
-    subgraph E2ETests["Playwright Cross-Browser & Cross-Device"]
-        TouchParity["6. Touch, Click, Keyboard Parity on Pins"]
-        FilterSync["7. Bidirectional Filter & URL Sync"]
-        ModalFlow["8. Community Contribution Form Submissions"]
-        AxeAudit["9. WCAG 2.2 AA Automated Accessibility Audit"]
+    subgraph UnitTests["Vitest Frontend Unit & Invariant Suites"]
+        GeoTests["7. Geolocation Ban Check (AST + Codebase Scan)"]
+        BoundsTests["8. South Mumbai Bounds Enforcement"]
+        GUrlTests["9. Google Maps Universal URL Generator"]
+        ZodTests["10. Submissions Schemas & Validation Rules"]
+        CanvasTests["11. Canvas EXIF Stripper & WebP Normalizer"]
+        TranslitTests["12. Devanagari Transliteration & Lexicon Tests"]
+        FilterEngineTests["13. Filter Engine Declarative Matchers"]
     end
 
-    subgraph PerfCI["Lighthouse CI & Performance Budgets"]
-        BundleCheck["10. JS Bundle Size Analyzer (< 120 kB)"]
-        LcpCheck["11. Simulated 4G LCP & CLS Benchmarks"]
+    subgraph E2ETests["Playwright Cross-Browser & System E2E"]
+        ParityE2E["14. Pin Interaction Parity (Touch, Click, Keyboard)"]
+        FilterE2E["15. Bidirectional Filter & URL Sync"]
+        SubmissionsE2E["16. Community Contribution Form Submissions"]
+        GalleryE2E["17. Photo Gallery Modal & Lightbox Navigation"]
+        TranslitE2E["18. Real-Time Transliteration & User Override"]
+        AdminE2E["19. Moderator Dashboard Approval & Promotion Flow"]
+        FlagshipE2E["20. Flagship End-to-End Realtime Flow"]
+        AxeAudit["21. WCAG 2.2 AA Automated Accessibility Audit"]
     end
 
-    UnitTests --> CI_Gate["GitHub Actions CI Pipeline"]
+    BackendTests --> CI_Gate["GitHub Actions CI Pipeline"]
+    UnitTests --> CI_Gate
     E2ETests --> CI_Gate
-    PerfCI --> CI_Gate
 ```
+
 
 ---
 

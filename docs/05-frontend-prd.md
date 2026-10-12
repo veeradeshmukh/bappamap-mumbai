@@ -3,22 +3,22 @@
 ## Document Details
 
 - **Project:** BappaMap Mumbai
-- **Framework:** Next.js (App Router, Static First) with React Islands
-- **Styling:** Tailwind CSS with CSS Variables
-- **Map Renderer:** MapLibre GL JS (v4.x/5.x)
-- **Status:** Approved Specification
+- **Framework:** Next.js 15 (App Router, Static First) with React Islands
+- **Styling:** Tailwind CSS with CSS Variables & Festive UI Accents
+- **Map Renderer:** MapLibre GL JS (v5.x)
+- **Status:** Approved Specification (Production Implementation)
 
 ---
 
 ## 1. Application Routing & Page Structure
 
-The application is structured for instant edge delivery and minimal client bundle overhead:
+The application is structured for instant edge delivery and zero client bundle bloat:
 
-| Route            | Purpose                                                 | Rendering Strategy                      | Key Components                                               |
-| :--------------- | :------------------------------------------------------ | :-------------------------------------- | :----------------------------------------------------------- |
-| `/`              | Main interactive view: Map, Filter drawer, Mandal cards | SSG + ISR (300s) with Client Map Island | `MapIsland`, `FilterBar`, `MandalCardList`, `AddReviewModal` |
-| `/mandal/[slug]` | Dedicated deep-dive detail page (SEO & direct links)    | SSG (pre-rendered for 12 seed mandals)  | `MandalHero`, `MandalHistory`, `PhotoGallery`, `ReviewFeed`  |
-| `/admin`         | Maintainer moderation portal                            | Client-side authenticated               | `AdminQueueTable`, `PhotoInspectionModal`                    |
+| Route | Purpose | Rendering Strategy | Key Components |
+| :--- | :--- | :--- | :--- |
+| `/` | Main interactive view: Map, Filter drawer, Mandal cards | SSG + ISR (300s) with Client Map Island | `MapContainer`, `FilterBar`, `MandalCardList`, `MandalExplorer`, `ContributionModal`, `MandalGalleryModal` |
+| `/admin` | Maintainer moderation portal | Client-side authenticated (Argon2 session) | `AdminQueueTable`, `PhotoInspectionModal`, `AuditLogView` |
+| `/admin/login` | Secure moderator authentication portal | Client-side authenticated | `LoginForm`, `SessionGuard` |
 
 ---
 
@@ -30,13 +30,13 @@ The application is structured for instant edge delivery and minimal client bundl
 - **Default Zoom:** `13.5`
 - **Zoom Constraints:** `minZoom: 12.0`, `maxZoom: 17.5`
 - **Max Bounding Box (`maxBounds`):**
-    ```typescript
-    export const SOUTH_MUMBAI_BOUNDS: [[number, number], [number, number]] = [
-        [72.78, 18.89], // Southwest (Colaba coast)
-        [72.87, 19.015] // Northeast (Parel / Lalbaug boundary)
-    ];
-    ```
-    _Constraint Enforcement:_ Users cannot physically drag, flick, or zoom outside these coordinates. Any attempt to pan beyond snaps back smoothly with dampening.
+  ```typescript
+  export const SOUTH_MUMBAI_BOUNDS: [[number, number], [number, number]] = [
+      [72.78, 18.89], // Southwest (Colaba coast)
+      [72.87, 19.015] // Northeast (Parel / Lalbaug boundary)
+  ];
+  ```
+  _Constraint Enforcement:_ Users cannot pan or zoom outside these coordinates. Any attempt to pan beyond snaps back smoothly with dampening.
 
 ### 2.2 Geolocation Ban
 
@@ -46,15 +46,15 @@ The application is structured for instant edge delivery and minimal client bundl
 
 ### 2.3 Pin & Popup Interaction (Parity Rule)
 
-A pin interaction must render the identical content and trigger the same state transition across all interaction modalities:
+A pin interaction renders identical content and triggers the same state transition across all interaction modalities:
 
 ```mermaid
 flowchart TD
-    UserAction["User Interaction (Mouse Hover / Touch Tap / Keyboard Focus+Enter)"]
+    UserAction["User Interaction (Mouse Click / Touch Tap / Keyboard Tab+Enter)"]
     StateUpdate["Activate Mandal State (selectedMandalId)"]
     MapResponse["1. Pan camera to pin with smooth easeTo<br>2. Highlight SVG Marker (Vermillion Glow)<br>3. Open MapLibre Popup"]
     CardResponse["4. Scroll corresponding Mandal Card into view<br>5. Apply active border to Card"]
-    PopupContent["Popup Displays:<br>- Mandal Name (English & Marathi)<br>- Locality & Founded Year<br>- 'Open in Google Maps' Universal Link Button"]
+    PopupContent["Popup Displays:<br>- Mandal Name (English & Marathi)<br>- Locality & Founded Year<br>- Photo Gallery CTA Button<br>- 'Open in Google Maps' Universal Link"]
 
     UserAction --> StateUpdate
     StateUpdate --> MapResponse
@@ -63,7 +63,6 @@ flowchart TD
 ```
 
 #### Universal Google Maps Link Format:
-
 ```typescript
 export function getGoogleMapsUrl(latitude: number, longitude: number): string {
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
@@ -74,114 +73,77 @@ export function getGoogleMapsUrl(latitude: number, longitude: number): string {
 
 ---
 
-## 3. Extensible Filter System & State Management
+## 3. Extensible Filter System & Bidirectional Synchronization
 
 ### 3.1 Bidirectional State Synchronization
 
 1. **URL as Single Source of Truth:** Filter parameters live directly in URL search params (e.g. `/?crowd=low,moderate&parking=true&rating=4`).
-2. **Filtering List Filters Pins:** When a user toggles "Low Crowd", only mandals matching the criteria remain visible in the card list AND their corresponding pins remain active on the map (unmatched pins drop to 20% opacity or are removed from the active GeoJSON source).
-3. **Selecting Card Focuses Pin:** Tapping or clicking a card in the list calls `map.flyTo({ center: [lng, lat], zoom: 15.5 })` and activates its pin popup.
+2. **Filtering List Filters Pins:** When a user toggles "Low Crowd", only mandals matching the criteria remain visible in the card list AND on the map.
+3. **Selecting Card Focuses Pin:** Tapping or clicking a card centers the map on the pin with smooth animation and opens its popup.
 
 ### 3.2 Extensible Filter Architecture
 
-Filter parameters are defined via a declarative config array rather than hardcoded UI:
-
-```typescript
-export interface FilterDefinition {
-    id: string;
-    labelEn: string;
-    labelMr: string;
-    type: "boolean" | "multiselect" | "range";
-    options?: { value: string; labelEn: string; labelMr: string }[];
-    matcher: (mandal: MandalItem, activeValue: any) => boolean;
-}
-
-export const REGISTERED_FILTERS: FilterDefinition[] = [
-    {
-        id: "crowd",
-        labelEn: "Crowd Level",
-        labelMr: "गर्दी",
-        type: "multiselect",
-        options: [
-            { value: "low", labelEn: "Low (< 30m)", labelMr: "कमी" },
-            { value: "moderate", labelEn: "Moderate (30m–1h)", labelMr: "मध्यम" },
-            { value: "heavy", labelEn: "Heavy (1h–3h)", labelMr: "जास्त" },
-            { value: "very_heavy", labelEn: "Very Heavy (3h+)", labelMr: "अतिशय गर्दी" }
-        ],
-        matcher: (mandal, val) => val.includes(mandal.currentCrowdLevel)
-    },
-    {
-        id: "parking",
-        labelEn: "Parking Nearby",
-        labelMr: "पार्किंग सोय",
-        type: "boolean",
-        matcher: (mandal, val) => Boolean(mandal.attributes?.parkingNearby) === val
-    },
-    {
-        id: "min_rating",
-        labelEn: "Minimum Rating",
-        labelMr: "किमान रेटिंग",
-        type: "range",
-        matcher: (mandal, val) => mandal.avgRating >= val
-    }
-];
-```
+Filters are declared declaratively via `REGISTERED_FILTERS` in `src/lib/filters/definitions.ts`:
+- **Crowd Level:** `low`, `moderate`, `heavy`, `very_heavy`
+- **Parking Nearby:** boolean flag
+- **Minimum Rating:** 1 to 5 stars
 
 ---
 
-## 4. Community Contribution Modals ("Add/Review Mandal")
+## 4. Community Contribution Modals & Privacy Pre-Flight
 
-The main top navigation bar houses a primary CTA button: **"Add/Review Mandal"** (`मंडळ जोडा / अभिप्राय द्या`). Clicking this button opens a modal offering three distinct paths:
+### 4.1 Contribution Modal Flow
+The header houses a primary CTA button: **"Add / Review Mandal"** (`मंडळ जोडा / अभिप्राय द्या`), opening three distinct workflows:
+1. **Suggest a New Mandal (`SuggestMandalForm.tsx`):**
+   - Includes real-time **Auto-Marathi Transliteration**: as the contributor types English names or localities, a debounced call queries `/api/transliterate` and populates the Marathi field. If the user edits the Marathi field manually, the user-override is preserved.
+2. **Submit a Review (`ReviewMandalForm.tsx`):**
+   - Allows rating (1 to 5 stars), crowd observation, and darshan notes.
+3. **Upload Mandal Photos (`UploadPhotoForm.tsx`):**
+   - In-browser HTML5 Canvas EXIF/GPS stripping re-encodes photos as WebP (< 1600px, 0.82 quality) before uploading.
 
-```
-+--------------------------------------------------------+
-|               Community Contribution                   |
-|       सहभाग नोंदवा: खालीलपैकी एक पर्याय निवडा        |
-|                                                        |
-|  [ 1. Add a New Mandal ]   --> Opens Mandal Suggestion |
-|  [ 2. Submit a Review  ]   --> Opens Rating & Feedback |
-|  [ 3. Upload Photos    ]   --> Opens Image Upload Flow |
-|                                                        |
-|  Protected by Cloudflare Turnstile | Privacy Assured   |
-+--------------------------------------------------------+
-```
-
-### Client-Side Image Privacy Pre-flight:
-
-Before any image leaves the client device, an in-memory HTML5 Canvas executes:
-
-1. `ctx.drawImage(img, 0, 0, width, height)` resizing to max 1600px dimension.
-2. `canvas.toBlob('image/webp', 0.82)`: Re-encodes the image. This permanently discards all original EXIF metadata, GPS latitude/longitude tags, camera make/model, and creation timestamps.
-3. Only the sanitized WebP blob is transmitted to `/api/submissions`.
+### 4.2 Community Photo Gallery Modal (`MandalGalleryModal.tsx`)
+- Triggered by clicking the **"Photos (N)"** badge on any `MandalCard` or popup button.
+- Displays responsive thumbnail grids, contributor credits, and full-screen lightbox viewing with keyboard navigation (`Esc`, `ArrowLeft`, `ArrowRight`).
+- Updates live when an admin approves new photos via Server-Sent Events.
 
 ---
 
-## 5. Accessibility (WCAG 2.2 AA Compliance)
+## 5. Live Server-Sent Events (SSE) Streaming
 
-1. **Focus Management:** Every interactive pin marker is an accessible `<button>` element with `tabindex="0"`, explicit `aria-label` (e.g. `aria-label="Lalbaugcha Raja, 1934, Lalbaug"`), and visible high-contrast focus rings (`focus-visible:ring-2 focus-visible:ring-vermillion`).
-2. **Keyboard Traversal:** Users can cycle through pins using `Tab` and open details with `Enter` or `Space`.
-3. **Contrast Ratio:** All text elements adhere strictly to WCAG AA minimum 4.5:1 for body copy and 3.0:1 for large headers against dark/light backgrounds.
-4. **Motion Safety:** All animations respect `@media (prefers-reduced-motion: reduce)`. WebGL shader effects and smooth map panning automatically disable or drop to instant cuts.
-
----
-
-## 6. Performance Budgets
-
-| Asset Category                     | Target Budget    | Enforcement                               |
-| :--------------------------------- | :--------------- | :---------------------------------------- |
-| **Initial HTML**                   | < 30 kB          | Static generation in Next.js              |
-| **Critical CSS**                   | < 25 kB          | Tailwind purge / extraction               |
-| **Client JS (Excluding Map)**      | < 80 kB gzipped  | Tree-shaken React components              |
-| **MapLibre GL JS + Worker**        | < 280 kB gzipped | Lazy-loaded on idle / visibility          |
-| **Web Fonts (Devanagari + Latin)** | < 50 kB          | WOFF2 with `unicode-range` subsetting     |
-| **Largest Contentful Paint (LCP)** | < 2.0s on 4G     | Lighthouse CI automated run               |
-| **Cumulative Layout Shift (CLS)**  | < 0.05           | Fixed aspect ratios on map and card slots |
+The core explorer (`MandalExplorer.tsx`) initiates an `EventSource` connection to `/api/events`:
+- Automatically reflects approved community mandals (`mandal_approved`).
+- Updates photo badges and gallery modal state when photos are approved (`photo_approved`).
+- Updates crowd indicator meters in real time without browser reloads (`crowd_decay_updated`).
 
 ---
 
-## 7. Document Cross-References
+## 6. Accessibility (WCAG 2.2 AA Compliance)
 
-- [01-PRD.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/01-PRD.md) — Product vision and requirements.
-- [04-backend-prd.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/04-backend-prd.md) — Backend API schemas.
-- [06-design-system.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/06-design-system.md) — Visual design tokens and typography.
-- [10-testing-and-qa.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/10-testing-and-qa.md) — Playwright E2E and Axe accessibility tests.
+1. **Focus Management:** Every pin marker is an accessible `<button>` element with `tabindex="0"`, explicit `aria-label`, and high-contrast focus rings.
+2. **Keyboard Traversal:** Users can cycle through pins using `Tab` and activate details with `Enter` or `Space`.
+3. **Contrast Ratio:** Text elements adhere to WCAG AA minimum 4.5:1 for body copy and 3.0:1 for large headers.
+4. **Motion Safety:** All animations respect `@media (prefers-reduced-motion: reduce)`.
+
+---
+
+## 7. Performance Budgets
+
+| Asset Category | Target Budget | Enforcement |
+| :--- | :--- | :--- |
+| **Initial HTML** | < 30 kB | Static generation in Next.js |
+| **Critical CSS** | < 25 kB | Tailwind CSS extraction |
+| **Client JS (Excluding Map)** | < 80 kB gzipped | Tree-shaken React components |
+| **MapLibre GL JS + Worker** | < 280 kB gzipped | Lazy-loaded on idle / visibility |
+| **Web Fonts (Devanagari + Latin)** | < 50 kB | WOFF2 with `unicode-range` subsetting |
+| **Largest Contentful Paint (LCP)** | < 2.0s on 4G | Lighthouse CI automated run |
+| **Cumulative Layout Shift (CLS)** | < 0.05 | Fixed aspect ratios on map and card slots |
+
+---
+
+## 8. Document Cross-References
+
+- [01-PRD.md](docs/01-PRD.md) — Product vision and requirements.
+- [04-backend-prd.md](docs/04-backend-prd.md) — Backend API schemas.
+- [06-design-system.md](docs/06-design-system.md) — Visual design tokens and typography.
+- [10-testing-and-qa.md](docs/10-testing-and-qa.md) — Playwright E2E and Axe accessibility tests.
+

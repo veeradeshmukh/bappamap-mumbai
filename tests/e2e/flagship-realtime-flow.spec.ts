@@ -58,9 +58,8 @@ test.describe("Flagship End-to-End Real-Time System Flow", () => {
 
         // Close modal
         const closeBtn = page.locator('[data-testid="receipt-close-btn"]');
-        if (await closeBtn.isVisible()) {
-            await closeBtn.click();
-        }
+        await expect(closeBtn).toBeVisible({ timeout: 5000 });
+        await closeBtn.click({ force: true });
 
         // 5. Open new page context for Admin Moderation
         const adminPage = await context.newPage();
@@ -75,11 +74,11 @@ test.describe("Flagship End-to-End Real-Time System Flow", () => {
         await adminPage.waitForLoadState("networkidle");
 
         // 6. Locate submitted mandal in the pending queue
-        const itemCard = adminPage.locator(`text=${mandalName}`);
+        const itemCard = adminPage.locator('[data-testid^="submission-card-"]').filter({ hasText: mandalName });
         await expect(itemCard).toBeVisible({ timeout: 10000 });
 
-        // 7. Click Approve
-        const approveBtn = adminPage.locator('[data-testid^="approve-btn-"]').first();
+        // 7. Click Approve on the specific card
+        const approveBtn = itemCard.locator('[data-testid^="approve-btn-"]');
         await approveBtn.click();
 
         // Wait for moderation confirmation

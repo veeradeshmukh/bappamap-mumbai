@@ -33,52 +33,96 @@ flowchart LR
 
 ```yaml
 # .github/workflows/ci.yml
-name: CI / Verification Pipeline
+name: CI Pipeline
 
 on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+  push:
+    branches: [main, "revamp/*"]
+  pull_request:
+    branches: [main]
 
 jobs:
-    verify:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+  backend-checks:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: bappapassword
+          POSTGRES_DB: bappamap
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-            - name: Setup Node.js 20
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-                  cache: "npm"
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Install dependencies
-              run: npm ci
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-            - name: Verify Formatting & Lint
-              run: |
-                  npm run lint
-                  npm run format:check
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
 
-            - name: Type Check
-              run: npm run typecheck
+      - name: Install backend dependencies
+        run: |
+          uv pip install --system -r backend/pyproject.toml ruff pytest pytest-asyncio
 
-            - name: Execute Geolocation & Security Guardrails
-              run: npm run test:security
+      - name: Run Ruff Lint
+        run: |
+          ruff check backend
 
-            - name: Run Unit & Integration Tests (TDD)
-              run: npm run test:unit -- --coverage
+      - name: Run Alembic Migrations
+        env:
+          DATABASE_URL: postgresql+asyncpg://postgres:bappapassword@localhost:5432/bappamap
+        run: |
+          cd backend
+          alembic upgrade head
+          cd ..
 
-            - name: Build Production Bundle
-              run: npm run build
+      - name: Seed Database
+        env:
+          DATABASE_URL: postgresql+asyncpg://postgres:bappapassword@localhost:5432/bappamap
+        run: |
+          python backend/scripts/seed.py
 
-            - name: Install Playwright Browsers
-              run: npx playwright install --with-deps chromium
+      - name: Run Pytest
+        env:
+          DATABASE_URL: postgresql+asyncpg://postgres:bappapassword@localhost:5432/bappamap
+        run: |
+          pytest backend/tests -v
 
-            - name: Run E2E & Accessibility Tests
-              run: npm run test:e2e
+  frontend-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Vitest (including Geolocation Ban Invariant)
+        run: npm run test:unit
+
+      - name: Build Next.js
+        run: npm run build
 ```
 
 ---

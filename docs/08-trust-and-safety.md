@@ -109,14 +109,18 @@ To comply with the Information Technology (Intermediary Guidelines and Digital M
     - **Acknowledgment:** Automated and logged within **24 hours**.
     - **Resolution / Removal:** Action taken within **36 hours** of receiving actual knowledge or court/government order.
     - **Emergency Privacy Violations:** Content depicting identity fraud or privacy breaches removed within **24 hours**.
-3. **Audit Trail:**
-    - Every moderation decision (approve, reject, takedown) records the admin user ID, timestamp, and review notes in the `submissions` audit log.
+3. **Immutable Audit Trail:**
+    - Every moderation decision (approve, reject, takedown) records the admin user ID, target entity, action, timestamp, and review notes in the `moderation_events` database audit table.
+4. **Moderator Authentication Security:**
+    - Moderator authentication uses Argon2id password hashing with timing-safe comparisons and HTTP-only signed session cookies, preventing brute force and timing attacks.
 
 ---
 
 ## 5. Document Cross-References
 
-- [01-PRD.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/01-PRD.md) — Product vision and non-goals.
-- [02-architecture.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/02-architecture.md) — R2 quarantine bucket architecture.
-- [04-backend-prd.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/04-backend-prd.md) — Admin moderation endpoints.
-- [09-security-and-privacy.md](file:///Users/ranveerdeshmukh/ganpati-mandal-map/docs/09-security-and-privacy.md) — Threat model and legal checklist.
+- [01-PRD.md](docs/01-PRD.md) — Product vision and non-goals.
+- [02-architecture.md](docs/02-architecture.md) — System flow and storage architecture.
+- [03-database-schema.md](docs/03-database-schema.md) — PostgreSQL table definitions and audit models.
+- [04-backend-prd.md](docs/04-backend-prd.md) — Admin moderation endpoints.
+- [09-security-and-privacy.md](docs/09-security-and-privacy.md) — Threat model and legal checklist.
+

@@ -24,7 +24,12 @@ export default function AdminDashboardPage() {
             setIsLoading(true);
             try {
                 const query = status === "all" ? "" : `?status=${status}`;
-                const res = await fetch(`/api/submissions${query}`, { cache: "no-store" });
+                const token = typeof window !== "undefined" ? sessionStorage.getItem("bappamap_admin_token") : null;
+                const headers: Record<string, string> = {};
+                if (token) {
+                    headers["Authorization"] = `Bearer ${token}`;
+                }
+                const res = await fetch(`/api/submissions${query}`, { cache: "no-store", headers });
 
                 if (res.status === 401) {
                     router.push("/admin/login");
@@ -96,9 +101,14 @@ export default function AdminDashboardPage() {
         const notes = reviewerNotesMap[id] || "";
 
         try {
+            const token = typeof window !== "undefined" ? sessionStorage.getItem("bappamap_admin_token") : null;
+            const headers: Record<string, string> = { "Content-Type": "application/json" };
+            if (token) {
+                headers["Authorization"] = `Bearer ${token}`;
+            }
             const res = await fetch(`/api/submissions/${id}`, {
                 method: "PATCH",
-                headers: { "Content-Type": "application/json" },
+                headers,
                 body: JSON.stringify({ action, reviewerNotes: notes })
             });
 
@@ -118,8 +128,16 @@ export default function AdminDashboardPage() {
 
     const handleLogout = async () => {
         try {
-            await fetch("/api/admin/auth/logout", { method: "POST" });
+            const token = typeof window !== "undefined" ? sessionStorage.getItem("bappamap_admin_token") : null;
+            const headers: Record<string, string> = {};
+            if (token) {
+                headers["Authorization"] = `Bearer ${token}`;
+            }
+            await fetch("/api/admin/auth/logout", { method: "POST", headers });
         } finally {
+            if (typeof window !== "undefined") {
+                sessionStorage.removeItem("bappamap_admin_token");
+            }
             router.push("/admin/login");
         }
     };

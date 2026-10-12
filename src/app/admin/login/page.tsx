@@ -10,23 +10,31 @@ export default function AdminLoginPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setErrorMessage(null);
         setIsSubmitting(true);
+
+        const formData = new FormData(e.currentTarget);
+        const submitPassword = (formData.get("password") as string) || password;
+        const submitEmail = (formData.get("email") as string) || email;
 
         try {
             const res = await fetch("/api/admin/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email: submitEmail, password: submitPassword })
             });
 
+            const data = await res.json();
             if (!res.ok) {
-                const data = await res.json();
                 setErrorMessage(data.detail || data.error || "Invalid admin password.");
                 setIsSubmitting(false);
                 return;
+            }
+
+            if (data.token) {
+                sessionStorage.setItem("bappamap_admin_token", data.token);
             }
 
             router.push("/admin");
@@ -73,6 +81,7 @@ export default function AdminLoginPage() {
                         </label>
                         <input
                             id="admin-email"
+                            name="email"
                             type="email"
                             required
                             data-testid="input-admin-email"
@@ -92,6 +101,7 @@ export default function AdminLoginPage() {
                         </label>
                         <input
                             id="admin-password"
+                            name="password"
                             type="password"
                             required
                             data-testid="input-admin-password"

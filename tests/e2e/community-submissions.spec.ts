@@ -112,7 +112,9 @@ test.describe("Sprint 3: Community Contribution Flows & Privacy Pre-Flight", () 
     test("should submit review and crowd report with star rating", async ({ page }) => {
         await page.goto("/");
 
-        await page.locator('[data-testid="add-review-modal-btn"]').click();
+        const openBtn = page.locator('[data-testid="add-review-modal-btn"]');
+        await expect(openBtn).toBeVisible({ timeout: 10000 });
+        await openBtn.click({ force: true });
 
         // Switch to Review & Crowd tab
         const reviewTab = page.locator('[data-testid="tab-review"]');
