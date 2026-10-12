@@ -37,7 +37,7 @@ jobs:
 
       - name: Install backend dependencies
         run: |
-          uv pip install --system -r backend/pyproject.toml
+          uv pip install --system -r backend/pyproject.toml ruff pytest pytest-asyncio
 
       - name: Run Ruff Lint
         run: |
