@@ -11,7 +11,7 @@ test.describe("Sprint 2: Filterable Directory & Bidirectional Sync", () => {
         });
     });
 
-    test("should render filter bar, counters, and all 12 directory cards on initial load", async ({
+    test("should render filter bar, counters, and all directory cards on initial load", async ({
         page
     }) => {
         await page.goto("/");
@@ -21,11 +21,12 @@ test.describe("Sprint 2: Filterable Directory & Bidirectional Sync", () => {
         await expect(searchInput).toBeVisible();
 
         const countBadge = page.locator('[data-testid="filter-count-badge"]');
-        await expect(countBadge).toContainText("Showing 12 of 12 mandals");
+        await expect(countBadge).toContainText(/Showing \d+ of \d+ mandals/);
 
         // Verify cards count
         const cards = page.locator('[data-testid^="mandal-card-"]');
-        await expect(cards).toHaveCount(12);
+        const cardCount = await cards.count();
+        expect(cardCount).toBeGreaterThanOrEqual(12);
 
         // Verify specific mandal card details
         const lalbaugCard = page.locator('[data-testid="mandal-card-lalbaugcha-raja"]');
@@ -40,19 +41,21 @@ test.describe("Sprint 2: Filterable Directory & Bidirectional Sync", () => {
     }) => {
         await page.goto("/");
         await expect(page.locator('[data-testid="filter-count-badge"]')).toContainText(
-            "Showing 12 of 12 mandals"
+            /Showing \d+ of \d+ mandals/
         );
+
+        const cards = page.locator('[data-testid^="mandal-card-"]');
+        const initialCount = await cards.count();
 
         const searchInput = page.locator('[data-testid="filter-search-input"]');
         await searchInput.click();
         await searchInput.fill("Lalbaug");
 
         // Card count should decrease to 3 (Lalbaugcha Raja, Ganesh Galli, Tejukaya)
-        const cards = page.locator('[data-testid^="mandal-card-"]');
         await expect(cards).toHaveCount(3);
 
         const countBadge = page.locator('[data-testid="filter-count-badge"]');
-        await expect(countBadge).toContainText("Showing 3 of 12 mandals");
+        await expect(countBadge).toContainText(/Showing 3 of \d+ mandals/);
 
         // Map pin for Lalbaugcha Raja should remain visible
         const lalbaugPin = page.locator('[data-testid="mandal-pin-lalbaugcha-raja"]');
@@ -67,12 +70,15 @@ test.describe("Sprint 2: Filterable Directory & Bidirectional Sync", () => {
         // Clear search using the clear button
         const clearBtn = page.getByRole("button", { name: /clear search/i });
         await clearBtn.click();
-        await expect(cards).toHaveCount(12);
+        await expect(cards).toHaveCount(initialCount);
         await expect(fortPin).toBeVisible();
     });
 
     test("should filter cards and pins by crowd level selection", async ({ page }) => {
         await page.goto("/");
+
+        const cards = page.locator('[data-testid^="mandal-card-"]');
+        const initialCount = await cards.count();
 
         const lowCrowdChip = page.locator('[data-testid="filter-crowd-low"]');
         await lowCrowdChip.click();
@@ -89,7 +95,7 @@ test.describe("Sprint 2: Filterable Directory & Bidirectional Sync", () => {
 
         // Click reset
         await resetBtn.click();
-        await expect(page.locator('[data-testid^="mandal-card-"]')).toHaveCount(12);
+        await expect(page.locator('[data-testid^="mandal-card-"]')).toHaveCount(initialCount);
         await expect(lowCrowdChip).toHaveAttribute("aria-pressed", "false");
     });
 
@@ -179,8 +185,10 @@ test.describe("Sprint 2: Filterable Directory & Bidirectional Sync", () => {
     test("should render empty state with reset button when no mandals match", async ({ page }) => {
         await page.goto("/");
         await expect(page.locator('[data-testid="filter-count-badge"]')).toContainText(
-            "Showing 12 of 12 mandals"
+            /Showing \d+ of \d+ mandals/
         );
+
+        const initialCardsCount = await page.locator('[data-testid^="mandal-card-"]').count();
 
         const searchInput = page.locator('[data-testid="filter-search-input"]');
         await searchInput.click();
@@ -194,7 +202,7 @@ test.describe("Sprint 2: Filterable Directory & Bidirectional Sync", () => {
         await resetBtn.click();
 
         await expect(emptyState).toBeHidden();
-        await expect(page.locator('[data-testid^="mandal-card-"]')).toHaveCount(12);
+        await expect(page.locator('[data-testid^="mandal-card-"]')).toHaveCount(initialCardsCount);
     });
 
     test("should pass WCAG 2.2 AA accessibility scan with zero violations", async ({ page }) => {

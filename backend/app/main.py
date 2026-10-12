@@ -2,7 +2,7 @@ import logging
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from backend.app.api.routers import auth, crowd, events, mandals, submissions
+from backend.app.api.routers import auth, crowd, events, mandals, submissions, transliterate
 from backend.app.core.config import settings
 from backend.app.db.session import engine, get_db
 from fastapi import Depends, FastAPI
@@ -60,6 +60,7 @@ app.include_router(submissions.router, prefix="/api")
 app.include_router(auth.router, prefix="/api")
 app.include_router(events.router, prefix="/api")
 app.include_router(crowd.router, prefix="/api")
+app.include_router(transliterate.router, prefix="/api")
 
 
 @app.get("/health", tags=["system"])

@@ -119,6 +119,28 @@ async def list_mandals(
     res = await session.execute(stmt)
     mandals = res.scalars().all()
 
+    # Pre-fetch approved photos grouped by mandal_id
+    mandal_ids = [m.id for m in mandals]
+    photos_by_mandal: dict[UUID, list[dict]] = {m.id: [] for m in mandals}
+    if mandal_ids:
+        pho_stmt = (
+            select(Photo)
+            .where(
+                Photo.mandal_id.in_(mandal_ids),
+                Photo.moderation_status.in_(["approved", "published"]),
+            )
+            .order_by(Photo.created_at.desc())
+        )
+        pho_res = await session.execute(pho_stmt)
+        for p in pho_res.scalars().all():
+            photos_by_mandal[p.mandal_id].append({
+                "id": str(p.id),
+                "url": p.public_url,
+                "caption": p.caption,
+                "contributor": p.contributor_name,
+                "createdAt": p.created_at.isoformat() if p.created_at else None,
+            })
+
     result = []
     for m in mandals:
         attrs = dict(m.metadata_json) if m.metadata_json else {}
@@ -155,6 +177,8 @@ async def list_mandals(
             # Core Differentiator: queue-aware darshan crowd analytics
             "mukhDarshanCrowd": mukh_crowd,
             "charanSparshCrowd": charan_crowd,
+            # Community approved photos
+            "photos": photos_by_mandal.get(m.id, []),
         })
 
     return result
@@ -192,7 +216,11 @@ async def get_mandal_detail(slug_or_id: str, session: AsyncSession = Depends(get
     ]
 
     # Approved photos
-    pho_stmt = select(Photo).where(Photo.mandal_id == m.id, Photo.moderation_status == "approved")
+    pho_stmt = (
+        select(Photo)
+        .where(Photo.mandal_id == m.id, Photo.moderation_status.in_(["approved", "published"]))
+        .order_by(Photo.created_at.desc())
+    )
     pho_res = await session.execute(pho_stmt)
     photos = [
         {
@@ -200,7 +228,7 @@ async def get_mandal_detail(slug_or_id: str, session: AsyncSession = Depends(get
             "url": p.public_url,
             "caption": p.caption,
             "contributor": p.contributor_name,
-            "createdAt": p.created_at.isoformat(),
+            "createdAt": p.created_at.isoformat() if p.created_at else None,
         }
         for p in pho_res.scalars().all()
     ]
@@ -229,3 +257,37 @@ async def get_mandal_detail(slug_or_id: str, session: AsyncSession = Depends(get
         "reviews": reviews,
         "photos": photos,
     }
+
+
+@router.get("/{slug_or_id}/photos")
+async def get_mandal_photos(slug_or_id: str, session: AsyncSession = Depends(get_db)):
+    """Fetches all approved photos for a specific mandal."""
+    try:
+        val_uuid = UUID(slug_or_id)
+        stmt = select(Mandal).where(or_(Mandal.slug == slug_or_id, Mandal.id == val_uuid))
+    except ValueError:
+        stmt = select(Mandal).where(Mandal.slug == slug_or_id)
+
+    res = await session.execute(stmt)
+    m = res.scalars().first()
+    if not m:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Mandal not found")
+
+    pho_stmt = (
+        select(Photo)
+        .where(Photo.mandal_id == m.id, Photo.moderation_status.in_(["approved", "published"]))
+        .order_by(Photo.created_at.desc())
+    )
+    pho_res = await session.execute(pho_stmt)
+    photos = [
+        {
+            "id": str(p.id),
+            "url": p.public_url,
+            "caption": p.caption,
+            "contributor": p.contributor_name,
+            "createdAt": p.created_at.isoformat() if p.created_at else None,
+        }
+        for p in pho_res.scalars().all()
+    ]
+    return {"mandalSlug": m.slug, "photos": photos}
+

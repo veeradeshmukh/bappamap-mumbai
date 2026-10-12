@@ -407,6 +407,19 @@ async def moderate_submission(
                     moderation_status="approved",
                 )
                 session.add(photo)
+                await session.flush()
+
+                await broadcaster.broadcast("photo_approved", {
+                    "mandalId": str(target_mandal.id),
+                    "slug": target_mandal.slug,
+                    "photo": {
+                        "id": str(photo.id),
+                        "url": photo.public_url,
+                        "caption": photo.caption,
+                        "contributor": photo.contributor_name,
+                        "createdAt": photo.created_at.isoformat() if photo.created_at else now.isoformat(),
+                    },
+                })
 
     await session.commit()
 

@@ -11,6 +11,7 @@ interface MandalCardListProps {
     selectedMandalSlug: string | null;
     onSelectMandal: (mandal: MandalItem) => void;
     onResetFilters: () => void;
+    onOpenGallery?: (mandal: MandalItem) => void;
 }
 
 export default function MandalCardList({
@@ -18,7 +19,8 @@ export default function MandalCardList({
     language,
     selectedMandalSlug,
     onSelectMandal,
-    onResetFilters
+    onResetFilters,
+    onOpenGallery
 }: MandalCardListProps) {
     if (mandals.length === 0) {
         return (
@@ -75,6 +77,7 @@ export default function MandalCardList({
                         language={language}
                         isSelected={mandal.slug === selectedMandalSlug}
                         onSelect={onSelectMandal}
+                        onOpenGallery={onOpenGallery}
                     />
                 ))}
             </div>

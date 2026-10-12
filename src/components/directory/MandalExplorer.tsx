@@ -5,6 +5,7 @@ import MapContainer from "@/components/map/MapContainer";
 import FilterBar from "@/components/filters/FilterBar";
 import MandalCardList from "@/components/directory/MandalCardList";
 import ContributionModal from "@/components/modals/ContributionModal";
+import MandalGalleryModal from "@/components/modals/MandalGalleryModal";
 import ThemeToggle from "@/components/common/ThemeToggle";
 import FestiveBackground from "@/components/ui/FestiveBackground";
 import GaneshaIcon from "@/components/icons/GaneshaIcon";
@@ -36,6 +37,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
 
     const { theme, toggleTheme } = useTheme();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [galleryMandal, setGalleryMandal] = useState<MandalItem | null>(null);
     const [mandals, setMandals] = useState<MandalItem[]>(initialMandals);
 
     useEffect(() => {
@@ -146,6 +148,30 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                     }
                 } catch (err) {
                     console.error("Error processing review_approved SSE:", err);
+                }
+            });
+
+            eventSource.addEventListener("photo_approved", (e: MessageEvent) => {
+                try {
+                    const eventData = JSON.parse(e.data);
+                    if (eventData?.slug && eventData?.photo && isMounted) {
+                        setMandals((prev) =>
+                            prev.map((m) => {
+                                if (m.slug === eventData.slug) {
+                                    const existingPhotos = m.photos || [];
+                                    const exists = existingPhotos.some((p) => p.id === eventData.photo.id);
+                                    if (exists) return m;
+                                    return {
+                                        ...m,
+                                        photos: [eventData.photo, ...existingPhotos]
+                                    };
+                                }
+                                return m;
+                            })
+                        );
+                    }
+                } catch (err) {
+                    console.error("Error processing photo_approved SSE:", err);
                 }
             });
         } catch {
@@ -293,6 +319,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                         language={language}
                         theme={theme}
                         onSelectMandal={handlePinSelect}
+                        onOpenGallery={setGalleryMandal}
                     />
                 </section>
 
@@ -318,6 +345,7 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                     selectedMandalSlug={selectedMandalSlug}
                     onSelectMandal={handleCardSelect}
                     onResetFilters={resetFilters}
+                    onOpenGallery={setGalleryMandal}
                 />
             </main>
 
@@ -356,6 +384,14 @@ export default function MandalExplorer({ initialMandals }: MandalExplorerProps) 
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 mandals={mandals}
+                language={language}
+            />
+
+            {/* Community Photo Gallery Modal */}
+            <MandalGalleryModal
+                isOpen={!!galleryMandal}
+                onClose={() => setGalleryMandal(null)}
+                mandal={galleryMandal}
                 language={language}
             />
         </div>

@@ -53,3 +53,24 @@ async def test_mandal_detail(client: httpx.AsyncClient):
     assert data["slug"] == "lalbaugcha-raja"
     assert "Lalbaugcha Raja" in data["nameEn"]
     assert "लालबागचा राजा" in data["nameMr"]
+    assert "photos" in data
+
+
+@pytest.mark.asyncio
+async def test_mandal_photos_endpoint(client: httpx.AsyncClient):
+    res = await client.get("/api/mandals/lalbaugcha-raja/photos")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["mandalSlug"] == "lalbaugcha-raja"
+    assert "photos" in data
+    assert isinstance(data["photos"], list)
+
+
+@pytest.mark.asyncio
+async def test_transliterate_endpoint(client: httpx.AsyncClient):
+    res = await client.get("/api/transliterate?text=Lalbaugcha+Raja")
+    assert res.status_code == 200
+    data = res.json()
+    assert "marathi" in data
+    assert "लालबाग" in data["marathi"]
+

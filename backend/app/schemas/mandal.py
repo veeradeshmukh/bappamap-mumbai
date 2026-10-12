@@ -21,6 +21,16 @@ class MandalAttributes(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
 
+class MandalPhotoResponse(BaseModel):
+    id: UUID | str
+    url: str
+    caption: str | None = None
+    contributor: str = Field(default="Devotee")
+    created_at: str | None = Field(None, alias="createdAt")
+
+    model_config = ConfigDict(populate_by_name=True, from_attributes=True)
+
+
 class MandalResponse(BaseModel):
     id: UUID
     slug: str
@@ -45,4 +55,8 @@ class MandalResponse(BaseModel):
     mukh_darshan_crowd: CrowdStatus | None = Field(None, alias="mukhDarshanCrowd")
     charan_sparsh_crowd: CrowdStatus | None = Field(None, alias="charanSparshCrowd")
 
+    # Community approved photos
+    photos: list[MandalPhotoResponse] = Field(default_factory=list)
+
     model_config = ConfigDict(populate_by_name=True, from_attributes=True)
+
